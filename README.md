@@ -1,4 +1,4 @@
-# Bored Engine - the boring text editor engine
+# Boring Engine - the boring text editor engine
 
 
 > write your document like you code. write in dedicated environment. manage your text contents. 
@@ -19,3 +19,8 @@
 ## Other engine projects
 
 - [nothing engine](https://github.com/bridgedxyz/nothing) - nothing but drawing engine.
+
+## Other Projects
+other boring related projects are being managed under [github/boringso](https://github.com/boringso)
+
+Visit [boring.so](https://boring.so) for more details

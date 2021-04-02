@@ -1,3 +1,5 @@
+![](./branding/cover.png)
+
 # Boring Engine - the boring text editor engine
 
 

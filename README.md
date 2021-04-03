@@ -26,3 +26,8 @@
 other boring related projects are being managed under [github/boringso](https://github.com/boringso)
 
 Visit [boring.so](https://boring.so) for more details
+
+
+## Who uses boring?
+- [Bridged Docs](https://github.com/bridgedxyz/docs) - Bridged docs site is built with boring
+- [code.surf Docs](https://github.com/surfcodes/website) - github.surf, surf.codes docs site is built with boring

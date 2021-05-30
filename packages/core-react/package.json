@@ -1,0 +1,7 @@
+{
+    "name": "@boringso/react-core",
+    "version": "0.0.0",
+    "dependencies": {
+        "draft-js": "^0.11.7"
+    }
+}

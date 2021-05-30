@@ -6,8 +6,12 @@
     "name": "streamich",
     "url": "https://github.com/streamich"
   },
-  "homepage": "https://github.com/streamich/react-embed",
-  "repository": "streamich/react-embed",
+  "contributors": [
+    "Bridged Authors",
+    "Boring Authors"
+  ],
+  "homepage": "https://github.com/birdgedxyz/boring",
+  "repository": "https://github.com/birdgedxyz/boring",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "files": [
@@ -15,6 +19,7 @@
     "esm/"
   ],
   "scripts": {
+    "postinstall": "yarn build",
     "start": "yarn storybook",
     "prettier": "prettier --ignore-path .gitignore --write 'src/**/*.{ts,tsx,js,jsx}'",
     "prettier:diff": "prettier -l 'src/**/*.{ts,tsx,js,jsx}'",

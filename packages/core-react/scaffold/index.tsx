@@ -1,11 +1,14 @@
 //
 import React from "react";
-import { Editor, EditorState } from "draft-js";
+import { Editor } from "../editor-instance";
 
 export function Scaffold() {
-  const [editorState, setEditorState] = React.useState(() =>
-    EditorState.createEmpty()
+  return (
+    <Editor
+      tools={{}}
+      data={{
+        blocks: [],
+      }}
+    ></Editor>
   );
-
-  return <Editor editorState={editorState} onChange={setEditorState} />;
 }

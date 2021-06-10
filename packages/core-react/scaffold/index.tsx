@@ -1,11 +1,24 @@
 //
 import React from "react";
-import { Editor, EditorState } from "draft-js";
+import styled from "@emotion/styled";
+import { Title } from "../title";
+
+import { MainBodyContentEditor } from "../content-editor";
 
 export function Scaffold() {
-  const [editorState, setEditorState] = React.useState(() =>
-    EditorState.createEmpty()
-  );
+  // const [shortcutOpen, setShortcutOpen] = useState<boolean>(false);
 
-  return <Editor editorState={editorState} onChange={setEditorState} />;
+  return (
+    <EditorWrap>
+      {/* <button onClick={handleclick}>insert</button> */}
+      <Title>Title</Title>
+      <MainBodyContentEditor />
+    </EditorWrap>
+  );
 }
+
+const EditorWrap = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 64px 140px;
+`;

@@ -2,6 +2,13 @@
     "name": "@boringso/react-core",
     "version": "0.0.0",
     "dependencies": {
-        "draft-js": "^0.11.7"
+        "@draft-js-plugins/editor": "^4.1.0",
+        "@draft-js-plugins/inline-toolbar": "^4.1.1",
+        "@draft-js-plugins/side-toolbar": "^4.2.0",
+        "draft-js": "^0.11.7",
+        "react-contenteditable": "^3.3.5"
+    },
+    "devDependencies": {
+        "@types/draft-js": "^0.11.3"
     }
 }

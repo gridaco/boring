@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Draft from "draft-js";
+import Immutable from "immutable";
 
 const blockRenderMap = Immutable.Map({
   unstyled: {

@@ -1,0 +1,11 @@
+{
+    "name": "boring-workspace",
+    "private": true,
+    "scripts": {
+        "editor": "yarn workspace editor dev"
+    },
+    "workspaces": [
+        "packages/*",
+        "editor"
+    ]
+}

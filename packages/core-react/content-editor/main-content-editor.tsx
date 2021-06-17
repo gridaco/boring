@@ -29,7 +29,7 @@ export function MainBodyContentEditor() {
   const editor = useRef<Editor | null>(null);
 
   const focus = () => {
-    editor.current.focus();
+    editor.current?.focus();
   };
 
   const onChange = (value: EditorState): void => {

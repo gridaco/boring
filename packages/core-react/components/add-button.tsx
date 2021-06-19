@@ -1,5 +1,6 @@
 // import './addbutton.scss';
 
+import { EditorState } from "draft-js";
 import React from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
@@ -7,6 +8,7 @@ import { getSelectedBlockNode } from "../utils";
 
 interface Props {
   focus?: () => void;
+  editorState: EditorState;
   getEditorState: () => void;
   setEditorState: () => void;
   sideButtons: any[];
@@ -23,12 +25,12 @@ interface State {
  * like Images/Embeds/Videos.
  */
 export default class AddButton extends React.Component<Props, State> {
-  node;
+  node: any;
   blockKey: string;
   blockType: string;
   blockLength: number;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       style: {},

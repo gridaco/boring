@@ -1,16 +1,20 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React from "react";
 
-import { EditorBlock, EditorState, SelectionState } from 'draft-js';
+import {
+  ContentBlock,
+  EditorBlock,
+  EditorState,
+  SelectionState,
+} from "draft-js";
 
-import { getCurrentBlock } from '../../model/';
+import { getCurrentBlock } from "../model";
 
-class ImageBlock extends React.Component {
-  static propTypes = {
-    block: PropTypes.object,
-    blockProps: PropTypes.object,
-  };
+interface Props {
+  block: ContentBlock;
+  blockProps: any;
+}
 
+class ImageBlock extends React.Component<Props> {
   focusBlock = () => {
     const { block, blockProps } = this.props;
     const { getEditorState, setEditorState } = blockProps;
@@ -32,20 +36,23 @@ class ImageBlock extends React.Component {
   render() {
     const { blockProps, block } = this.props;
     const data = block.getData();
-    const src = data.get('src');
+    const src = data.get("src");
     const showPlaceholder = block.getLength() === 0 && blockProps.placeholder;
 
     if (src !== null) {
-      const extraProps = {};
+      const extraProps: any = {};
 
       if (showPlaceholder) {
-        extraProps['data-placeholder'] = blockProps.placeholder;
-        extraProps.className = 'md-block-image-caption--empty';
+        extraProps["data-placeholder"] = blockProps.placeholder;
+        extraProps.className = "md-block-image-caption--empty";
       }
 
       return (
         <div>
-          <div className="md-block-image-inner-container" onClick={this.focusBlock}>
+          <div
+            className="md-block-image-inner-container"
+            onClick={this.focusBlock}
+          >
             <img role="presentation" src={src} />
           </div>
           <figcaption {...extraProps}>

@@ -1,17 +1,19 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import { EditorState } from "draft-js";
+import PropTypes from "prop-types";
+import React from "react";
 
-import { addNewBlock } from '../../model';
-import { Block } from '../../util/constants';
+import { addNewBlock } from "../../model";
+import { Block } from "../../utils/constants";
 
-export default class ImageButton extends React.Component {
-  static propTypes = {
-    setEditorState: PropTypes.func,
-    getEditorState: PropTypes.func,
-    close: PropTypes.func,
-  };
+interface Props {
+  setEditorState: (s: EditorState) => void;
+  getEditorState: () => EditorState;
+  close: () => void;
+}
 
-  constructor(props) {
+export default class ImageButton extends React.Component<Props> {
+  input: any;
+  constructor(props: Props) {
     super(props);
 
     this.onClick = this.onClick.bind(this);
@@ -23,7 +25,6 @@ export default class ImageButton extends React.Component {
     this.input.click();
   }
 
-
   /*
   This is an example of how an image button can be added
   on the side control. This Button handles the image addition locally
@@ -34,16 +35,15 @@ export default class ImageButton extends React.Component {
   onChange(e) {
     // e.preventDefault();
     const file = e.target.files[0];
-    if (file.type.indexOf('image/') === 0) {
+    if (file.type.indexOf("image/") === 0) {
       // console.log(this.props.getEditorState());
       // eslint-disable-next-line no-undef
       const src = URL.createObjectURL(file);
-      this.props.setEditorState(addNewBlock(
-        this.props.getEditorState(),
-        Block.IMAGE, {
+      this.props.setEditorState(
+        addNewBlock(this.props.getEditorState(), Block.IMAGE, {
           src,
-        }
-      ));
+        })
+      );
     }
     this.props.close();
   }
@@ -60,9 +60,11 @@ export default class ImageButton extends React.Component {
         <input
           type="file"
           accept="image/*"
-          ref={(c) => { this.input = c; }}
+          ref={(c) => {
+            this.input = c;
+          }}
           onChange={this.onChange}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
         />
       </button>
     );

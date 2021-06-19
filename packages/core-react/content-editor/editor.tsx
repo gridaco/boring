@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import {
   Editor,
   EditorState,
@@ -7,7 +7,12 @@ import {
   ContentBlock,
   genKey,
   Modifier,
+  DraftEditorCommand,
+  DraftHandleValue,
+  DraftStyleMap,
 } from "draft-js";
+
+// @ts-ignore
 import isSoftNewlineEvent from "draft-js/lib/isSoftNewlineEvent";
 import { OrderedMap } from "immutable";
 
@@ -23,13 +28,7 @@ import rendererFn from "../components/custom-renderer";
 import customStyleMap from "../utils/customstylemap";
 import RenderMap from "../utils/rendermap";
 import keyBindingFn from "../utils/keybinding";
-import {
-  Block,
-  Entity as E,
-  HANDLED,
-  NOT_HANDLED,
-  KEY_COMMANDS,
-} from "../utils/constants";
+import { Block, Entity as E, KEY_COMMANDS } from "../utils/constants";
 import beforeInput, { StringToTypeMap } from "../utils/beforeinput";
 import blockStyleFn from "../utils/blockStyleFn";
 import {
@@ -47,15 +46,27 @@ type TButton = {
   style: string;
   icon?: string;
   description?: string;
-  onClick?: (e?) => void;
+  onClick?: (e?: any) => void;
 };
 
+interface ToolbarConfig {
+  block: any;
+  inline: Array<any>;
+}
+
+const HANDLED = "handled";
+const NOT_HANDLED = "not-handled";
 interface Props {
-  beforeInput?: (editorState, str, onChange, stringToTypeMap) => void;
-  keyBindingFn?: () => void;
-  customStyleMap?: () => void;
-  blockStyleFn?: () => void;
-  rendererFn?: (onChange, editorstate, props) => void;
+  beforeInput: (
+    editorState: EditorState,
+    str: string,
+    onChange: any,
+    stringToTypeMap: any
+  ) => DraftHandleValue;
+  keyBindingFn?: () => DraftEditorCommand | string;
+  customStyleMap?: DraftStyleMap;
+  blockStyleFn?: () => string;
+  rendererFn?: (onChange: any, editorstate: EditorState, props: any) => void;
   editorEnabled?: boolean;
   spellCheck?: boolean;
   stringToTypeMap?: any;
@@ -65,29 +76,29 @@ interface Props {
   placeholder?: string;
 
   imageCaptionPlaceholder?: string;
-  continuousBlocks?: string[];
-  sideButtons?: {
+  continuousBlocks: string[];
+  sideButtons: {
     component?: Function;
     title: string;
   }[];
 
-  editorState?: EditorState;
-  onChange?: (e?, c?) => void;
-  onTab?: (e?) => void;
-  onUpArrow?: (e?) => void;
-  onDownArrow?: (e?) => void;
-  handleKeyCommand?: (e?) => typeof HANDLED | typeof NOT_HANDLED | boolean;
-  handleReturn?: (e?) => typeof HANDLED | typeof NOT_HANDLED | boolean;
+  editorState: EditorState;
+  onChange?: (e?: any, c?: any) => void;
+  onTab?: (e?: any) => void;
+  onUpArrow?: (e?: any) => void;
+  onDownArrow?: (e?: any) => void;
+  handleKeyCommand?: (e?: any) => typeof HANDLED | typeof NOT_HANDLED | boolean;
+  handleReturn?: (e?: any) => typeof HANDLED | typeof NOT_HANDLED | boolean;
   handlePastedText?: (
-    text,
-    html,
-    es
+    text: any,
+    html: any,
+    es: any
   ) => typeof HANDLED | typeof NOT_HANDLED | boolean;
   disableToolbar?: boolean;
   disableLinkEdit?: boolean;
   showLinkEditToolbar?: boolean;
-  toolbarConfig?: any;
-  processURL?: (e?) => void;
+  toolbarConfig?: ToolbarConfig;
+  processURL?: (e?: any) => string;
   ToolbarComponent?: Node;
 }
 
@@ -131,21 +142,21 @@ class MediumDraftEditor extends React.Component<Props> {
     toolbarConfig: {},
   };
 
-  toolbar;
-  focus;
-  onChange;
-  _editorNode;
-  getEditorState;
-  toggleBlockType;
-  toggleInlineStyle;
-  blockRendererFn;
+  toolbar: any;
+  focus: any;
+  onChange: any;
+  _editorNode: any;
+  getEditorState: any;
+  toggleBlockType: any;
+  toggleInlineStyle: any;
+  blockRendererFn: any;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.focus = () => this._editorNode.focus();
-    this.onChange = (editorState, cb) => {
-      this.props.onChange(editorState, cb);
+    this.onChange = (editorState: EditorState, cb: any) => {
+      this.props.onChange?.(editorState, cb);
     };
 
     this.getEditorState = () => this.props.editorState;
@@ -159,7 +170,7 @@ class MediumDraftEditor extends React.Component<Props> {
     this.toggleBlockType = this._toggleBlockType.bind(this);
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
     this.setLink = this.setLink.bind(this);
-    this.blockRendererFn = this.props.rendererFn(
+    this.blockRendererFn = this.props.rendererFn?.(
       this.onChange,
       this.getEditorState,
       this.props
@@ -169,19 +180,19 @@ class MediumDraftEditor extends React.Component<Props> {
   /**
    * Implemented to provide nesting of upto 2 levels in ULs or OLs.
    */
-  onTab(e) {
+  onTab(e: React.KeyboardEvent<{}>): void {
     if (this.props.onTab) {
       this.props.onTab(e);
       return;
     }
     const { editorState } = this.props;
-    const newEditorState = RichUtils.onTab(e, editorState, 2);
+    const newEditorState = RichUtils.onTab(e, editorState!, 2);
     if (newEditorState !== editorState) {
       this.onChange(newEditorState);
     }
   }
 
-  onUpArrow = (e) => {
+  onUpArrow = (e: any) => {
     if (this.props.onUpArrow) {
       this.props.onUpArrow(e);
       return;
@@ -234,7 +245,7 @@ class MediumDraftEditor extends React.Component<Props> {
     }
   };
 
-  onDownArrow = (e) => {
+  onDownArrow = (e: any) => {
     if (this.props.onDownArrow) {
       this.props.onDownArrow(e);
     }
@@ -243,7 +254,7 @@ class MediumDraftEditor extends React.Component<Props> {
   /*
   Adds a hyperlink on the selected text with some basic checks.
   */
-  setLink(url) {
+  setLink(url: string) {
     let { editorState } = this.props;
     const selection = editorState.getSelection();
     const content = editorState.getCurrentContent();
@@ -284,12 +295,14 @@ class MediumDraftEditor extends React.Component<Props> {
    *   inline: ['BOLD', 'ITALIC', 'UNDERLINE', 'hyperlink'],
    * };
    */
-  configureToolbarBlockOptions(toolbarConfig) {
+  configureToolbarBlockOptions(toolbarConfig?: ToolbarConfig) {
     const { blockButtons } = this.props;
     return toolbarConfig && toolbarConfig.block
       ? toolbarConfig.block
-          .map((type) => blockButtons.find((button) => button.style === type))
-          .filter((button) => button !== undefined)
+          .map((type: string) =>
+            blockButtons?.find((button) => button.style === type)
+          )
+          .filter((button: any) => button !== undefined)
       : blockButtons;
   }
 
@@ -303,11 +316,11 @@ class MediumDraftEditor extends React.Component<Props> {
    *   inline: ['BOLD', 'ITALIC', 'UNDERLINE', 'hyperlink'],
    * };
    */
-  configureToolbarInlineOptions(toolbarConfig) {
+  configureToolbarInlineOptions(toolbarConfig?: ToolbarConfig) {
     const { inlineButtons } = this.props;
     return toolbarConfig && toolbarConfig.inline
       ? toolbarConfig.inline
-          .map((type) => inlineButtons.find((button) => button.style === type))
+          .map((type) => inlineButtons?.find((button) => button.style === type))
           .filter((button) => button !== undefined)
       : inlineButtons;
   }
@@ -326,7 +339,7 @@ class MediumDraftEditor extends React.Component<Props> {
     then succeeded by the inline type, the current selection's inline type will be
     togglled.
   */
-  handleKeyCommand(command) {
+  handleKeyCommand(command: DraftEditorCommand): DraftHandleValue {
     // console.log(command);
     const { editorState } = this.props;
     if (this.props.handleKeyCommand) {
@@ -407,7 +420,8 @@ class MediumDraftEditor extends React.Component<Props> {
   /*
   This function is responsible for emitting various commands based on various key combos.
   */
-  handleBeforeInput(str) {
+  // : string, editorState: EditorState, eventTimeStamp: number):
+  handleBeforeInput(str: string): DraftHandleValue {
     return this.props.beforeInput(
       this.props.editorState,
       str,
@@ -423,7 +437,7 @@ class MediumDraftEditor extends React.Component<Props> {
   simply converted to an unstyled empty block. If RETURN is pressed on an unstyled block
   default behavior is executed.
   */
-  handleReturn(e) {
+  handleReturn(e: React.KeyboardEvent<Element>) {
     if (this.props.handleReturn) {
       const behavior = this.props.handleReturn(e);
       if (behavior === HANDLED || behavior === true) {
@@ -483,7 +497,7 @@ class MediumDraftEditor extends React.Component<Props> {
   The function documented in `draft-js` to be used to toggle block types (mainly
   for some key combinations handled by default inside draft-js).
   */
-  _toggleBlockType(blockType) {
+  _toggleBlockType(blockType: string) {
     const type = RichUtils.getCurrentBlockType(this.props.editorState);
     if (type.indexOf(`${Block.ATOMIC}:`) === 0) {
       return;
@@ -495,13 +509,13 @@ class MediumDraftEditor extends React.Component<Props> {
   The function documented in `draft-js` to be used to toggle inline styles of selection (mainly
   for some key combinations handled by default inside draft-js).
   */
-  _toggleInlineStyle(inlineStyle) {
+  _toggleInlineStyle(inlineStyle: any) {
     this.onChange(
       RichUtils.toggleInlineStyle(this.props.editorState, inlineStyle)
     );
   }
 
-  removeLink = (blockKey, entityKey) => {
+  removeLink = (blockKey: string, entityKey: string) => {
     const { editorState } = this.props;
     const content = editorState.getCurrentContent();
     const block = content.getBlockForKey(blockKey);
@@ -527,7 +541,7 @@ class MediumDraftEditor extends React.Component<Props> {
     );
   };
 
-  editLinkAfterSelection = (blockKey, entityKey = null) => {
+  editLinkAfterSelection = (blockKey: string, entityKey: string) => {
     if (entityKey === null) {
       return;
     }
@@ -564,7 +578,7 @@ class MediumDraftEditor extends React.Component<Props> {
    * Handle pasting when cursor is in an image block. Paste the text as the
    * caption. Otherwise, let Draft do its thing.
    */
-  handlePastedText = (text, html, es) => {
+  handlePastedText = (text: string, html: string, es: any) => {
     const currentBlock = getCurrentBlock(this.props.editorState);
     if (currentBlock.getType() === Block.IMAGE) {
       const { editorState } = this.props;
@@ -605,7 +619,7 @@ class MediumDraftEditor extends React.Component<Props> {
     const editorClass = `md-RichEditor-editor${
       !editorEnabled ? " md-RichEditor-readonly" : ""
     }`;
-    let isCursorLink = false;
+    let isCursorLink: boolean | any = false;
     if (editorEnabled && showLinkEditToolbar) {
       isCursorLink = isCursorBetweenLink(editorState);
     }

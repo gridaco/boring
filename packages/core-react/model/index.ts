@@ -6,7 +6,7 @@ import { Block, Entity } from "../utils/constants";
 /*
 Returns default block-level metadata for various block type. Empty object otherwise.
 */
-export const getDefaultBlockData = (blockType, initialData = {}) => {
+export const getDefaultBlockData = (blockType: string, initialData = {}) => {
   switch (blockType) {
     case Block.TODO:
       return { checked: false };
@@ -18,7 +18,7 @@ export const getDefaultBlockData = (blockType, initialData = {}) => {
 /*
 Get currentBlock in the editorState.
 */
-export const getCurrentBlock = (editorState) => {
+export const getCurrentBlock = (editorState: EditorState) => {
   const selectionState = editorState.getSelection();
   const contentState = editorState.getCurrentContent();
   const block = contentState.getBlockForKey(selectionState.getStartKey());
@@ -30,7 +30,7 @@ Adds a new block (currently replaces an empty block) at the current cursor posit
 of the given `newType`.
 */
 export const addNewBlock = (
-  editorState,
+  editorState: EditorState,
   newType = Block.UNSTYLED,
   initialData = {}
 ) => {
@@ -66,7 +66,7 @@ export const addNewBlock = (
 Changes the block type of the current block.
 */
 export const resetBlockWithType = (
-  editorState,
+  editorState: EditorState,
   newType = Block.UNSTYLED,
   overrides = {}
 ) => {
@@ -92,7 +92,7 @@ export const resetBlockWithType = (
 /*
 Update block-level metadata of the given `block` to the `newData`/
 */
-export const updateDataOfBlock = (editorState, block, newData) => {
+export const updateDataOfBlock = (editorState: EditorState, block, newData) => {
   const contentState = editorState.getCurrentContent();
   const newBlock = block.merge({
     data: newData,
@@ -111,8 +111,8 @@ Used from [react-rte](https://github.com/sstur/react-rte/blob/master/src/lib/ins
 by [sstur](https://github.com/sstur)
 */
 export const addNewBlockAt = (
-  editorState,
-  pivotBlockKey,
+  editorState: EditorState,
+  pivotBlockKey: string,
   newBlockType = Block.UNSTYLED,
   initialData = {}
 ) => {
@@ -169,7 +169,7 @@ export const addNewBlockAt = (
 /**
  * Check whether the cursor is between entity of type LINK
  */
-export const isCursorBetweenLink = (editorState) => {
+export const isCursorBetweenLink = (editorState: EditorState) => {
   let ret = null;
   const selection = editorState.getSelection();
   const content = editorState.getCurrentContent();

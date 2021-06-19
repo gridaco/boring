@@ -3,11 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import Editor, { createEditorStateWithText } from "@draft-js-plugins/editor";
 
 import Draft, { EditorState, AtomicBlockUtils } from "draft-js";
-import Embed from "@boring-ui/embed";
-import { extendedBlockRenderMap } from "../blocks";
+
+import { extendedBlockRenderMap, MediaComponent } from "../blocks";
 import { inlineToolbarPlugin, InlineToolbar } from "../inline-toolbar";
 import { keyBindingFn, handleKeyCommand } from "../key-maps";
-
 /**
  * demo text used for development. shall not be referenced on production.
  */
@@ -65,7 +64,9 @@ export function MainBodyContentEditor() {
         <Editor
           blockRenderMap={extendedBlockRenderMap}
           keyBindingFn={keyBindingFn}
-          handleKeyCommand={handleKeyCommand}
+          handleKeyCommand={(c, s) => {
+            return handleKeyCommand(c, s, setEditorState);
+          }}
           editorState={editorState}
           onChange={onChange}
           blockRendererFn={blocksRenderHandler}
@@ -91,8 +92,4 @@ function blocksRenderHandler(contentBlock: Draft.ContentBlock) {
       },
     };
   }
-}
-
-function MediaComponent() {
-  return <Embed url="https://www.youtube.com/watch?v=RIZjZFoDhRc" />;
 }

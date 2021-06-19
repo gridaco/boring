@@ -1,10 +1,9 @@
 //
 import React, { useEffect, useRef, useState } from "react";
 import Editor, { createEditorStateWithText } from "@draft-js-plugins/editor";
-
 import Draft, { EditorState, AtomicBlockUtils } from "draft-js";
 import Embed from "@boring-ui/embed";
-import { extendedBlockRenderMap } from "../blocks";
+import { extendedBlockRenderMap } from "../blocks/render-map";
 import { inlineToolbarPlugin, InlineToolbar } from "../inline-toolbar";
 import { keyBindingFn, handleKeyCommand } from "../key-maps";
 

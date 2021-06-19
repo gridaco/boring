@@ -1,16 +1,5 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import Draft from "draft-js";
-import Immutable from "immutable";
-
-const blockRenderMap = Immutable.Map({
-  unstyled: {
-    element: "div",
-    wrapper: <WrapperBlock />,
-  },
-});
-export const extendedBlockRenderMap =
-  Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
 export function WrapperBlock(props: { children?: JSX.Element }) {
   const [hover, setHover] = useState<boolean>(false);

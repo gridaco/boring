@@ -1,5 +1,5 @@
 import React from "react";
-
+import styled from "@emotion/styled";
 import {
   ContentBlock,
   EditorBlock,
@@ -48,7 +48,7 @@ class ImageBlock extends React.Component<Props> {
       }
 
       return (
-        <div>
+        <BlockImage>
           <div
             className="md-block-image-inner-container"
             onClick={this.focusBlock}
@@ -58,7 +58,7 @@ class ImageBlock extends React.Component<Props> {
           <figcaption {...extraProps}>
             <EditorBlock {...this.props} />
           </figcaption>
-        </div>
+        </BlockImage>
       );
     }
     return <EditorBlock {...this.props} />;
@@ -66,3 +66,55 @@ class ImageBlock extends React.Component<Props> {
 }
 
 export default ImageBlock;
+
+const BlockImage = styled.figure`
+  margin: 10px 0;
+  background: #fbfbfb;
+  img {
+    cursor: default;
+    max-width: 100%;
+    border: 1px solid #eee;
+    box-sizing: border-box;
+
+    &.is-selected {
+      box-shadow: 0 0 0 3px #02b875;
+    }
+  }
+
+  figcaption {
+    display: block;
+    font-size: 14px;
+    line-height: 1.4;
+    color: rgba(0, 0, 0, 0.6);
+    letter-spacing: 0;
+    font-weight: 300;
+    font-style: normal;
+    text-align: center;
+    padding: 5px 0;
+
+    .public-DraftStyleDefault-block {
+      text-align: center;
+    }
+
+    &.md-block-image-caption--empty {
+      position: relative;
+
+      &::before {
+        position: absolute;
+        content: attr(data-placeholder);
+        left: 0;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .md-block-image-inner-container {
+    position: relative;
+  }
+  .md-block-image-toolbar-container {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    cursor: pointer;
+  }
+`;

@@ -1,7 +1,7 @@
 // import './text.scss';
 
-import React from 'react';
-import { EditorBlock } from 'draft-js';
+import React from "react";
+import { EditorBlock } from "draft-js";
 
 // export default class Paragraph extends Component {
 //    render(){

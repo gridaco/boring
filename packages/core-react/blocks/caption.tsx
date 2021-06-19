@@ -1,0 +1,36 @@
+// import './caption.scss';
+import styled from "@emotion/styled";
+import React from "react";
+import { EditorBlock } from "draft-js";
+
+export default (props: any) => (
+  <CaptionBlock>
+    <EditorBlock {...props} />
+  </CaptionBlock>
+);
+
+const CaptionBlock = styled.div`
+  display: block;
+  position: relative;
+  font-style: normal;
+  padding: 10px 0;
+  font-family: "Hoefler Text", "Georgia", serif;
+  margin: 0 0 20px 0;
+  background-color: #f7f7f7;
+  border-radius: 5px;
+  line-height: 1.2em;
+
+  &::before {
+    content: "“";
+    color: #c6dfff;
+    display: inline;
+    position: absolute;
+    left: -25px;
+    top: -5px;
+    font-size: 3em;
+  }
+
+  .public-DraftStyleDefault-ltr {
+    text-align: center;
+  }
+`;

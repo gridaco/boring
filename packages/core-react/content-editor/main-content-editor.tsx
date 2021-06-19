@@ -8,7 +8,6 @@ import Blockquote from "@tiptap/extension-blockquote";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 /* load all highlight.js languages */ import lowlight from "lowlight";
 // endregion block components
-import { MenuBar } from "../menu-bar";
 import { Menu } from "../menu";
 
 interface MainBodyContentEditorProps {
@@ -40,7 +39,7 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
 
   return (
     <RootWrapper>
-      <MenuBar editor={editor} />
+      {/* <MenuBar editor={editor} /> */}
       <Menu editor={editor} />
       <TouchArea initialHeight={props.initialHeight} onClick={onTouchAreaClick}>
         <EditorContentWrapper editor={editor} />
@@ -50,7 +49,7 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
 }
 
 const TouchArea = styled.div<{
-  initialHeight: string;
+  initialHeight?: string;
 }>`
   cursor: text;
   min-height: ${(p) => p.initialHeight ?? "200px"};

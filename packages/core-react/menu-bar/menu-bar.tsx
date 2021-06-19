@@ -1,3 +1,4 @@
+import React from "react";
 import { Editor } from "@tiptap/react";
 export const MenuBar = (props: { editor: Editor | null }) => {
   const { editor } = props;

@@ -1,24 +1,38 @@
 //
-import React from "react";
+import React, { useRef } from "react";
 import styled from "@emotion/styled";
 import { Title } from "../title";
 
 import { MainBodyContentEditor } from "../content-editor";
 
-export function Scaffold() {
+interface ScaffoldProps {
+  /**
+   * defaults to false
+   */
+  fullWidth?: boolean;
+}
+
+export function Scaffold(props: ScaffoldProps) {
   // const [shortcutOpen, setShortcutOpen] = useState<boolean>(false);
 
+  const onTitleReturnHit = () => {
+    // todo - focus to main editor
+  };
+
   return (
-    <EditorWrap>
+    <EditorWrap fullWidth={props.fullWidth}>
       {/* <button onClick={handleclick}>insert</button> */}
-      <Title>Title</Title>
+      <Title onReturn={onTitleReturnHit}>Title</Title>
       <MainBodyContentEditor />
     </EditorWrap>
   );
 }
 
-const EditorWrap = styled.div`
+const EditorWrap = styled.div<{
+  fullWidth?: boolean;
+}>`
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 64px 140px;
+  padding: 160px ${(p) => (p.fullWidth ? "140px" : "200px")};
 `;

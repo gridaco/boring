@@ -30,7 +30,7 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
       CodeBlockLowlight.configure({
         lowlight,
       }),
-      ...props.extensions,
+      ...(props.extensions ?? []),
     ],
     content: props.initialContent,
   });

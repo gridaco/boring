@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import styled from "@emotion/styled";
 import { Title } from "../title";
-
+import { Node } from "@tiptap/core";
 import { MainBodyContentEditor } from "../content-editor";
 
 interface ScaffoldProps {
@@ -10,6 +10,16 @@ interface ScaffoldProps {
    * defaults to false
    */
   fullWidth?: boolean;
+
+  /**
+   * boring in-content extended node blocks configuration
+   */
+  extensions?: Node[];
+
+  // doc
+  initialTitle?: string;
+  initialContent?: string;
+  //
 }
 
 export function Scaffold(props: ScaffoldProps) {
@@ -22,8 +32,11 @@ export function Scaffold(props: ScaffoldProps) {
   return (
     <EditorWrap fullWidth={props.fullWidth}>
       {/* <button onClick={handleclick}>insert</button> */}
-      <Title onReturn={onTitleReturnHit}>Title</Title>
-      <MainBodyContentEditor />
+      <Title onReturn={onTitleReturnHit}>{props.initialTitle}</Title>
+      <MainBodyContentEditor
+        initialContent={props.initialContent}
+        extensions={props.extensions}
+      />
     </EditorWrap>
   );
 }

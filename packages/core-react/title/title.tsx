@@ -5,6 +5,11 @@ interface TitleProps {
   children: string;
 
   /**
+   * placeholder of title. - @todo - not implemented
+   */
+  placeholder?: string;
+
+  /**
    * title is only allowed to be single line. when enter key hit, it should be handled.
    */
   onReturn: () => void;
@@ -19,14 +24,17 @@ export function Title(props: TitleProps) {
     }
   };
   return (
-    <TitleText onKeyDown={onKeyDown} contentEditable>
-      {props.children}
-    </TitleText>
+    <_Wrap>
+      <TitleText onKeyDown={onKeyDown} contentEditable>
+        {props.children}
+      </TitleText>
+    </_Wrap>
   );
 }
 
-const TitleText = styled.h1`
+const _Wrap = styled.div`
   [contenteditable]:focus {
     outline: 0px solid transparent;
   }
 `;
+const TitleText = styled.h1``;

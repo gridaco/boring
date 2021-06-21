@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import { Node } from "@tiptap/core";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 // region block components
@@ -15,6 +16,8 @@ interface MainBodyContentEditorProps {
    * initial height of interactive area. defaults to 200px.
    */
   initialHeight?: string;
+  initialContent?: string;
+  extensions?: Node[];
 }
 
 export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
@@ -26,6 +29,7 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
       CodeBlockLowlight.configure({
         lowlight,
       }),
+      ...props.extensions,
     ],
   });
 

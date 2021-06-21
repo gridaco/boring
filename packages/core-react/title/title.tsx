@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 
 interface TitleProps {
-  children: string;
+  children: string | undefined;
 
   /**
    * placeholder of title. - @todo - not implemented

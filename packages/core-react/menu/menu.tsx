@@ -39,22 +39,24 @@ export function Menu(props: { editor: Editor | null }) {
 // https://www.tiptap.dev/examples/menus
 const MenuWrapper = styled(BubbleMenu)`
   display: flex;
-  background-color: #0d0d0d;
+  background-color: #e6e6e6;
   padding: 0.2rem;
   border-radius: 0.5rem;
+  box-shadow: 2px 2px 4px #a2a2a22b;
 `;
 
 const Button = styled.button`
   border: none;
   background: none;
-  color: #fff;
-  font-size: 0.85rem;
+  color: #343434;
   font-weight: 500;
-  padding: 0 0.2rem;
+  padding: 0.2rem 0.6rem;
   opacity: 0.6;
 
   &:hover,
   &.is-active {
     opacity: 1;
   }
+
+  font-size: medium;
 `;

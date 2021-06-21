@@ -20,7 +20,9 @@ export function Title(props: TitleProps) {
     // 13 = return key
     if (e.keyCode === 13) {
       props.onReturn();
-      return false;
+
+      // disable line break
+      e.preventDefault();
     }
   };
   return (
@@ -33,6 +35,8 @@ export function Title(props: TitleProps) {
 }
 
 const _Wrap = styled.div`
+  max-width: 100%;
+
   [contenteditable]:focus {
     outline: 0px solid transparent;
   }

@@ -31,6 +31,7 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
       }),
       ...props.extensions,
     ],
+    content: props.initialContent,
   });
 
   const focus = () => {
@@ -61,6 +62,7 @@ const TouchArea = styled.div<{
 `;
 
 const RootWrapper = styled.div`
+  max-width: 50vw; // fixme
   /* disable outline for contenteditable */
   [contenteditable] {
     outline: 0px solid transparent;

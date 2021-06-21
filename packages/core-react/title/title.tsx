@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 
 interface TitleProps {
   children: string;
@@ -8,6 +9,7 @@ interface TitleProps {
    * placeholder of title. - @todo - not implemented
    */
   placeholder?: string;
+  noplaceholder?: boolean;
 
   /**
    * title is only allowed to be single line. when enter key hit, it should be handled.
@@ -15,6 +17,7 @@ interface TitleProps {
   onReturn: () => void;
 }
 
+const DEFAULT_PLACEHOLDER_TEXT = "Untitled";
 export function Title(props: TitleProps) {
   const onKeyDown = (e) => {
     // 13 = return key
@@ -27,7 +30,15 @@ export function Title(props: TitleProps) {
   };
   return (
     <_Wrap>
-      <TitleText onKeyDown={onKeyDown} contentEditable>
+      <TitleText
+        placeholder={
+          props.noplaceholder
+            ? undefined
+            : props.placeholder ?? DEFAULT_PLACEHOLDER_TEXT
+        }
+        onKeyDown={onKeyDown}
+        contentEditable
+      >
         {props.children}
       </TitleText>
     </_Wrap>
@@ -36,9 +47,17 @@ export function Title(props: TitleProps) {
 
 const _Wrap = styled.div`
   max-width: 100%;
-
-  [contenteditable]:focus {
-    outline: 0px solid transparent;
-  }
 `;
-const TitleText = styled.h1``;
+const TitleText = styled.input`
+  border: none;
+  :focus {
+    outline: none;
+  }
+
+  ::placeholder {
+    color: #e1e1e1;
+  }
+  font-size: 48px;
+  font-weight: bold;
+  font-family: ${DEFAULT_THEME_FONT_FAMILY};
+`;

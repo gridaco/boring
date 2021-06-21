@@ -9,6 +9,7 @@ import Blockquote from "@tiptap/extension-blockquote";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 /* load all highlight.js languages */ import lowlight from "lowlight";
 // endregion block components
+import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 import { Menu } from "../menu";
 
 interface MainBodyContentEditorProps {
@@ -70,6 +71,29 @@ const RootWrapper = styled.div`
 `;
 
 const EditorContentWrapper = styled(EditorContent)`
+  /* font */
+  .ProseMirror {
+    h1,
+    h2,
+    h3,
+    p {
+      color: #222222;
+      font-family: ${DEFAULT_THEME_FONT_FAMILY};
+      line-height: 110%;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 180%;
+    }
+
+    /* p only */
+    p {
+      line-height: 150%;
+    }
+  }
+
   /* placeholder's style - https://www.tiptap.dev/api/extensions/placeholder/#placeholder*/
   .ProseMirror p.is-editor-empty:first-child::before {
     content: attr(data-placeholder);

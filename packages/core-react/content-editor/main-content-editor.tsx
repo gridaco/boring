@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { Node } from "@tiptap/core";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { Editor, useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 // region block components
 
@@ -40,6 +40,9 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
     editor?.chain().focus().run();
   };
 
+  /**
+   * this is for focusing to content editor when padding safe area is clicked. (usually bottom of the editor)
+   */
   const onTouchAreaClick = () => {
     focus();
   };
@@ -48,6 +51,8 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
     <RootWrapper>
       {/* <MenuBar editor={editor} /> */}
       <Menu editor={editor} />
+      {/* <CommandsConfig /> */}
+
       <TouchArea initialHeight={props.initialHeight} onClick={onTouchAreaClick}>
         <EditorContentInstance editor={editor} />
       </TouchArea>

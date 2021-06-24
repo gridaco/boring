@@ -2,6 +2,7 @@
     "name": "@boringso/react-core",
     "version": "0.0.0",
     "dependencies": {
+        "@tippyjs/react": "^4.2.5",
         "@tiptap/extension-blockquote": "^2.0.0-beta.14",
         "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.30",
         "@tiptap/extension-mention": "^2.0.0-beta.60",

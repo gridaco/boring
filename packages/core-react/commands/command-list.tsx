@@ -5,7 +5,7 @@ interface CommandItem {
   title: string;
 }
 
-export function CommandList(props: {
+export function CommandsList(props: {
   command: (cmd: CommandItem) => void;
   items: CommandItem[];
 }) {

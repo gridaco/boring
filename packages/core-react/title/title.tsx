@@ -36,11 +36,10 @@ export function Title(props: TitleProps) {
             ? undefined
             : props.placeholder ?? DEFAULT_PLACEHOLDER_TEXT
         }
+        defaultValue={props.children}
         onKeyDown={onKeyDown}
         contentEditable
-      >
-        {props.children}
-      </TitleText>
+      ></TitleText>
     </_Wrap>
   );
 }

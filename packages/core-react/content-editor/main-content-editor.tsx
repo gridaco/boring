@@ -4,13 +4,15 @@ import { Node } from "@tiptap/core";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 // region block components
-import Placeholder from "@tiptap/extension-placeholder";
-import Blockquote from "@tiptap/extension-blockquote";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-/* load all highlight.js languages */ import lowlight from "lowlight";
+
 // endregion block components
 import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 import { Menu } from "../menu";
+import {
+  PlaceholderConfig,
+  CodeblockConfig,
+  BlockQuoteConfig,
+} from "./configs";
 
 interface MainBodyContentEditorProps {
   /**
@@ -25,11 +27,10 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Placeholder,
-      Blockquote,
-      CodeBlockLowlight.configure({
-        lowlight,
-      }),
+      PlaceholderConfig,
+      CodeblockConfig,
+      BlockQuoteConfig,
+
       ...(props.extensions ?? []),
     ],
     content: props.initialContent,
@@ -48,7 +49,7 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
       {/* <MenuBar editor={editor} /> */}
       <Menu editor={editor} />
       <TouchArea initialHeight={props.initialHeight} onClick={onTouchAreaClick}>
-        <EditorContentWrapper editor={editor} />
+        <EditorContentInstance editor={editor} />
       </TouchArea>
     </RootWrapper>
   );
@@ -70,7 +71,7 @@ const RootWrapper = styled.div`
   }
 `;
 
-const EditorContentWrapper = styled(EditorContent)`
+const EditorContentInstance = styled(EditorContent)`
   /* font */
   .ProseMirror {
     h1,
@@ -102,6 +103,28 @@ const EditorContentWrapper = styled(EditorContent)`
     pointer-events: none;
     height: 0;
   }
+
+  /* ================================================================ */
+  /* region placeholder */
+  /* Placeholder (only at the top) */
+  .ProseMirror .is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #ced4da;
+    pointer-events: none;
+    height: 0;
+  }
+
+  /* Placeholder (on every new line) */
+  .ProseMirror .is-empty::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #ced4da;
+    pointer-events: none;
+    height: 0;
+  }
+  /* endregion placeholder */
+  /* ================================================================ */
 
   .ProseMirror {
     /* ================================================================ */

@@ -13,6 +13,8 @@ export const PlaceholderConfig = Placeholder.configure({
       return headingPlaceholders[node.attrs.level];
     }
 
-    return "Type '/' for commands";
+    if (node.type.name === "paragraph") {
+      return "Type '/' for commands";
+    }
   },
 });

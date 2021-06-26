@@ -1,3 +1,7 @@
+type TextContent = string;
+type RawContent = string;
+type CodeContent = RawContent;
+
 type BlockCreationActionType =
   | typeof add_any_block
   //
@@ -5,18 +9,20 @@ type BlockCreationActionType =
   | HeadingBlockCreationActionType
   | typeof add_paragraph_block;
 
-interface IAddBlockAction {
+interface IAddBlockAction<T = RawContent> {
   type: BlockCreationActionType;
+  content: T;
 }
 
 const add_any_block = "add-any-block";
-interface AddAnyBlockAction extends IAddBlockAction {
+interface AddAnyBlockAction<T = RawContent> extends IAddBlockAction<T> {
   type: typeof add_any_block;
 }
 
 const add_code_block = "add-code-block";
 interface AddCodeBlock extends IAddBlockAction {
   type: typeof add_code_block;
+  content: CodeContent;
 }
 
 type HeadingBlockCreationActionType =

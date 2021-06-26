@@ -1,0 +1,7 @@
+{
+    "name": "@boring.so/loader",
+    "version": "0.0.0",
+    "dependencies": {
+        "@boring.so/document-model": "0.0.0"
+    }
+}

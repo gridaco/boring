@@ -1,0 +1,8 @@
+{
+    "name": "@boring.so/template-provider",
+    "version": "0.0.0",
+    "dependencies": {
+        "@boring.so/document-model": "0.0.0",
+        "handlebars": "^4.7.7"
+    }
+}

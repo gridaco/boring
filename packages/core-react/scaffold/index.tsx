@@ -18,7 +18,9 @@ interface ScaffoldProps {
 
   // doc
   initialTitle?: string;
+  onTitleChange?: (title: string) => void;
   initialContent?: string;
+  onContentChange?: (content: string) => void;
   //
 }
 
@@ -32,8 +34,11 @@ export function Scaffold(props: ScaffoldProps) {
   return (
     <EditorWrap fullWidth={props.fullWidth}>
       {/* <button onClick={handleclick}>insert</button> */}
-      <Title onReturn={onTitleReturnHit}>{props.initialTitle}</Title>
+      <Title onChange={props.onTitleChange} onReturn={onTitleReturnHit}>
+        {props.initialTitle}
+      </Title>
       <MainBodyContentEditor
+        onChange={props.onContentChange}
         initialContent={props.initialContent}
         extensions={props.extensions}
       />

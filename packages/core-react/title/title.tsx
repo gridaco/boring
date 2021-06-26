@@ -14,20 +14,27 @@ interface TitleProps {
   /**
    * title is only allowed to be single line. when enter key hit, it should be handled.
    */
-  onReturn: () => void;
+  onReturn?: () => void;
+  onChange?: (title: string) => void;
 }
 
 const DEFAULT_PLACEHOLDER_TEXT = "Untitled";
 export function Title(props: TitleProps) {
-  const onKeyDown = (e) => {
+  const onkeydown = (e) => {
     // 13 = return key
     if (e.keyCode === 13) {
-      props.onReturn();
+      props.onReturn?.();
 
       // disable line break
       e.preventDefault();
     }
   };
+
+  const onchange = (e) => {
+    const title = e.target.value;
+    props.onChange?.(title);
+  };
+
   return (
     <_Wrap>
       <TitleText
@@ -37,7 +44,8 @@ export function Title(props: TitleProps) {
             : props.placeholder ?? DEFAULT_PLACEHOLDER_TEXT
         }
         defaultValue={props.children}
-        onKeyDown={onKeyDown}
+        onChange={onchange}
+        onKeyDown={onkeydown}
         contentEditable
       ></TitleText>
     </_Wrap>

@@ -15,15 +15,23 @@ import {
 } from "./configs";
 
 interface MainBodyContentEditorProps {
+  contentmode?: "html" | "json";
   /**
    * initial height of interactive area. defaults to 200px.
    */
   initialHeight?: string;
   initialContent?: string;
   extensions?: Node[];
+  onChange?: (content: string) => void;
 }
 
-export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
+export function MainBodyContentEditor({
+  contentmode = "html",
+  extensions = [],
+  initialHeight,
+  initialContent,
+  onChange,
+}: MainBodyContentEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -31,9 +39,13 @@ export function MainBodyContentEditor(props: MainBodyContentEditorProps) {
       CodeblockConfig,
       BlockQuoteConfig,
 
-      ...(props.extensions ?? []),
+      ...extensions,
     ],
-    content: props.initialContent,
+    content: initialContent,
+    onUpdate: ({ editor }) => {
+      const content = editor.getHTML();
+      onChange?.(content);
+    },
   });
 
   const focus = () => {

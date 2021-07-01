@@ -8,4 +8,12 @@ export class Template<Prop> {
   title: BoringTitleLike;
   content: BoringContent;
   defaultProps: object = {};
+  props: object;
+
+  /**
+   * render template with props
+   */
+  render(): string {
+    return "";
+  }
 }

@@ -65,7 +65,7 @@ export function MainBodyContentEditor({
       <Menu editor={editor} />
       {/* <CommandsConfig /> */}
 
-      <TouchArea initialHeight={props.initialHeight} onClick={onTouchAreaClick}>
+      <TouchArea initialHeight={initialHeight} onClick={onTouchAreaClick}>
         <EditorContentInstance editor={editor} />
       </TouchArea>
     </RootWrapper>

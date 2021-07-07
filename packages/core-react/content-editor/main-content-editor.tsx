@@ -13,6 +13,7 @@ import {
   CodeblockConfig,
   BlockQuoteConfig,
 } from "./configs";
+import { BoringContent } from "@boring.so/document-model";
 
 interface MainBodyContentEditorProps {
   contentmode?: "html" | "json";
@@ -20,7 +21,7 @@ interface MainBodyContentEditorProps {
    * initial height of interactive area. defaults to 200px.
    */
   initialHeight?: string;
-  initialContent?: string;
+  initialContent?: string | BoringContent;
   extensions?: Node[];
   onChange?: (content: string) => void;
 }
@@ -41,7 +42,7 @@ export function MainBodyContentEditor({
 
       ...extensions,
     ],
-    content: initialContent,
+    content: _content(initialContent),
     onUpdate: ({ editor }) => {
       const content = editor.getHTML();
       onChange?.(content);
@@ -70,6 +71,13 @@ export function MainBodyContentEditor({
       </TouchArea>
     </RootWrapper>
   );
+}
+
+function _content(raw: string | BoringContent): string {
+  if (typeof raw == "string") {
+    return raw;
+  }
+  return raw.raw;
 }
 
 const TouchArea = styled.div<{

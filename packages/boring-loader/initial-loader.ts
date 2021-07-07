@@ -1,9 +1,39 @@
-import { BoringDocument, EmptyDocument } from "@boring.so/document-model";
+import {
+  BoringContent,
+  BoringDocument,
+  BoringTitleLike,
+  EmptyDocument,
+} from "@boring.so/document-model";
 export class DocumentInitial {
-  title: string;
+  title: BoringTitleLike;
+  content: BoringContent;
+
+  constructor({
+    title,
+    content,
+  }: {
+    title: BoringTitleLike;
+    content: BoringContent;
+  }) {
+    this.title = title;
+    this.content = content;
+  }
 }
 
-export class StaticDocumentInitial extends DocumentInitial {}
+export class StaticDocumentInitial extends DocumentInitial {
+  constructor({
+    title,
+    content,
+  }: {
+    title: BoringTitleLike;
+    content: BoringContent;
+  }) {
+    super({
+      title: title,
+      content: content,
+    });
+  }
+}
 
 export class TemplateInitial extends DocumentInitial {
   template: string | (() => string);

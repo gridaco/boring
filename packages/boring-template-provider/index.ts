@@ -1,19 +1,30 @@
 import { BoringContent, BoringTitleLike } from "@boring.so/document-model";
+import { DocumentInitial, StaticDocumentInitial } from "@boring.so/loader";
 
 export class TemplateProvider {
   register() {} // todo
 }
 
-export class Template<Prop> {
+export class Template<Prop> extends DocumentInitial {
   title: BoringTitleLike;
   content: BoringContent;
   defaultProps: object = {};
   props: object;
 
+  constructor() {
+    super({
+      title: undefined,
+      content: undefined,
+    });
+  }
+
   /**
    * render template with props
    */
-  render(): string {
-    return "";
+  render(): StaticDocumentInitial {
+    return new StaticDocumentInitial({
+      title: this.title,
+      content: this.content,
+    });
   }
 }

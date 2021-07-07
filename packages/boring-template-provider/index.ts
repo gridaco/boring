@@ -5,7 +5,7 @@ export class TemplateProvider {
   register() {} // todo
 }
 
-export class Template<Prop> extends DocumentInitial {
+export class UnconstrainedTemplate<Prop> extends DocumentInitial {
   title: BoringTitleLike;
   content: BoringContent;
   defaultProps: object = {};

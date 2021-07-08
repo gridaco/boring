@@ -4,6 +4,9 @@ type BoringTitleIcon = string;
 export type BoringTitleLike = string | PageIconAndName | BoringTitle;
 
 export function boringTitleLikeAsBoringTitle(tl: BoringTitleLike): BoringTitle {
+  if (!tl) {
+    return;
+  }
   if (tl instanceof BoringTitle) {
     return tl;
   }

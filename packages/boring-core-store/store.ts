@@ -1,5 +1,9 @@
 import { openDB, deleteDB, wrap, unwrap, IDBPDatabase } from "idb";
-import { BoringDocument, BoringDocumentId } from "@boring.so/document-model";
+import {
+  BoringContent,
+  BoringDocument,
+  BoringDocumentId,
+} from "@boring.so/document-model";
 
 /*no-export*/ const _document_store_db_v = 1;
 /*no-export*/ const _document_store_db_n = "documents";
@@ -60,5 +64,12 @@ export class BoringDocumentStore {
       doc.id = id;
     }
     return this.service.put(doc);
+  }
+
+  async updateContent(content: string) {
+    const beforeupdate = await this.get();
+    beforeupdate.content = new BoringContent(content);
+    /*no-await (no need to await)*/ this.put(beforeupdate);
+    return beforeupdate;
   }
 }

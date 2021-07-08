@@ -1,5 +1,13 @@
-import { BoringTitle } from "./title.model";
-import { BoringContent } from "./content.model";
+import {
+  BoringTitle,
+  BoringTitleLike,
+  boringTitleLikeAsBoringTitle,
+} from "./title.model";
+import {
+  BoringContent,
+  BoringContentLike,
+  boringContentLikeAsBoringContent,
+} from "./content.model";
 import { nanoid } from "nanoid";
 export interface BoringDocumentTemplateConstraint {
   /**
@@ -11,7 +19,7 @@ export interface BoringDocumentTemplateConstraint {
 
 export type BoringDocumentId = string;
 
-function autoid(): string {
+export function autoid(): string {
   return nanoid();
 }
 export class BoringDocument {
@@ -26,10 +34,12 @@ export class BoringDocument {
     id = autoid(),
   }: {
     id?: BoringDocumentId;
-    title?: BoringTitle;
-    content: BoringContent;
+    title?: BoringTitleLike;
+    content: BoringContentLike;
   }) {
-    (this.title = title), (this.content = content), (this.id = id);
+    (this.title = boringTitleLikeAsBoringTitle(title)),
+      (this.content = boringContentLikeAsBoringContent(content)),
+      (this.id = id);
   }
 }
 

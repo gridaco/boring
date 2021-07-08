@@ -89,7 +89,7 @@ const EditorContentInstance = styled(EditorContent)`
   }
 
   /* placeholder's style - https://www.tiptap.dev/api/extensions/placeholder/#placeholder*/
-  .ProseMirror p.is-editor-empty:first-child::before {
+  .ProseMirror p.is-editor-empty:first-of-type::before {
     content: attr(data-placeholder);
     float: left;
     color: #ced4da;
@@ -100,7 +100,7 @@ const EditorContentInstance = styled(EditorContent)`
   /* ================================================================ */
   /* region placeholder */
   /* Placeholder (only at the top) */
-  .ProseMirror .is-editor-empty:first-child::before {
+  .ProseMirror .is-editor-empty:first-of-type::before {
     content: attr(data-placeholder);
     float: left;
     color: #ced4da;

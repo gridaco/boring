@@ -12,6 +12,7 @@ import {
   `boring.so/documents/${id}`;
 export class BoringDocumentsStore {
   private _db: IDBPDatabase;
+  private readonly tmpstore = new Map<string, BoringDocument>();
   async db(): Promise<IDBPDatabase> {
     if (this._db) {
       return this._db;
@@ -35,11 +36,15 @@ export class BoringDocumentsStore {
   }
 
   async get(id: string): Promise<BoringDocument> {
-    return await (await this.db()).get(_boring_documents_store_name, id);
+    return this.tmpstore.has(id)
+      ? this.tmpstore.get(id)
+      : await (await this.db()).get(_boring_documents_store_name, id);
   }
 
   async set(doc: BoringDocument) {
+    this.tmpstore.set(doc.id, doc);
     await (await this.db()).add(_boring_documents_store_name, doc);
+    this.tmpstore.delete(doc.id);
   }
 
   async put(doc: BoringDocument) {
@@ -56,7 +61,8 @@ export class BoringDocumentStore {
   }
 
   async get() {
-    return this.service.get(this.id);
+    const doc = await this.service.get(this.id);
+    return doc;
   }
 
   async put(doc: BoringDocument, id?: BoringDocumentId) {

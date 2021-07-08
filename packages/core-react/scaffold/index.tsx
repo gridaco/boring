@@ -65,10 +65,13 @@ export function Scaffold({
   useEffect(() => {
     if (initializer.shouldload) {
       initializer.shouldload.then((d) => {
-        setTitle(d.title.raw);
-        // content update
-        setContent(d.content.raw);
-        // content update
+        if (d) {
+          setTitle(d.title.raw);
+          setContent(d.content.raw);
+        } else {
+          setTitle("ERR");
+          setContent("<h3>404 page not found</h3>");
+        }
       });
     }
   }, [initializer.id]);

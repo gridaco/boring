@@ -1,5 +1,7 @@
 import {
   BoringContent,
+  BoringContentLike,
+  boringContentLikeAsBoringContent,
   BoringDocument,
   BoringTitleLike,
   EmptyDocument,
@@ -13,10 +15,10 @@ export class DocumentInitial {
     content,
   }: {
     title: BoringTitleLike;
-    content: BoringContent;
+    content: BoringContentLike;
   }) {
     this.title = title;
-    this.content = content;
+    this.content = boringContentLikeAsBoringContent(content);
   }
 }
 
@@ -26,7 +28,7 @@ export class StaticDocumentInitial extends DocumentInitial {
     content,
   }: {
     title: BoringTitleLike;
-    content: BoringContent;
+    content: BoringContentLike;
   }) {
     super({
       title: title,

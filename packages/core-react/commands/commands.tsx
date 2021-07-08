@@ -87,7 +87,6 @@ export const SlashCommands = Extension.create({
                 });
               },
               onKeyDown(props) {
-                console.log("onKeyDown", props);
                 return (component.ref as CommandsList).onKeyDown(props.event);
               },
               onExit() {

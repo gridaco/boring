@@ -24,10 +24,11 @@ export class CommandsList extends React.Component<Props, State> {
   }
 
   upHandler() {
+    const previndex =
+      (this.state.selectedIndex + this.props.items.length - 1) %
+      this.props.items.length;
     this.setState({
-      selectedIndex:
-        (this.state.selectedIndex + this.props.items.length - 1) %
-        this.props.items.length,
+      selectedIndex: previndex,
     });
   }
 
@@ -50,7 +51,6 @@ export class CommandsList extends React.Component<Props, State> {
   }
 
   onKeyDown(event) {
-    console.log("event", event);
     if (event.key === "ArrowUp") {
       this.upHandler();
       return true;
@@ -71,13 +71,14 @@ export class CommandsList extends React.Component<Props, State> {
 
   render() {
     const { items } = this.props;
-    const { selectedIndex } = this.state;
     return (
       <ItemsHolder onKeyDown={this.onKeyDown}>
         {items.map((item, index) => {
           return (
             <Item
-              isSelected={index === selectedIndex}
+              className={
+                index === this.state.selectedIndex ? "is-selected" : undefined
+              }
               key={index}
               onClick={() => {
                 this.selectItem(index);
@@ -102,11 +103,7 @@ const ItemsHolder = styled.div`
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.1);
 `;
 
-interface ItemProp {
-  isSelected: boolean;
-}
-
-const Item = styled.button<ItemProp>`
+const Item = styled.button`
   display: block;
   width: 100%;
   text-align: left;

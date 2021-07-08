@@ -5,6 +5,16 @@ import { Title } from "../title";
 import { Node } from "@tiptap/core";
 import { MainBodyContentEditor } from "../content-editor";
 import { BoringContent, BoringDocument } from "@boring.so/document-model";
+import { EditorConfig, defaults as DefaultConfig } from "@boring.so/config";
+import { Editor, useEditor, EditorContent } from "@tiptap/react";
+import { default_extensions } from "./scaffold-extensions";
+
+export type InitialDocumentProp =
+  | {
+      title?: string;
+      content?: string;
+    }
+  | BoringDocument;
 
 interface ScaffoldProps {
   /**
@@ -15,57 +25,83 @@ interface ScaffoldProps {
   /**
    * boring in-content extended node blocks configuration
    */
-  extensions?: Node[];
+  extensions?: Node<unknown | any>[];
+  contentmode?: "html" | "json";
 
   // region document model
-  /**
-  once initial document is provided, other individual initial[content, title] will be ignored
-  */
-  initialDocument?: BoringDocument;
-
-  /**
-  once initial document is provided, other individual initial[content, title] will be ignored
-  */
-  initialTitle?: string;
+  initial?: InitialDocumentProp;
   onTitleChange?: (title: string) => void;
 
-  /**
-   * once initial document is provided, other individual initial[content, title] will be ignored
-   */
-  initialContent?: string;
   onContentChange?: (content: string) => void;
   // endregion document model
+
+  config?: EditorConfig;
 }
 
-export function Scaffold(props: ScaffoldProps) {
+export function Scaffold({
+  initial,
+  fullWidth,
+  onTitleChange,
+  onContentChange,
+  extensions,
+  contentmode = "html",
+  config = DefaultConfig,
+}: ScaffoldProps) {
+  // region doc init
   let _title: string;
   let _content: string | BoringContent;
-  if (props.initialDocument) {
-    _title = props.initialDocument.title.raw; // add icon handling
-    _content = props.initialDocument.content;
+  if (initial instanceof BoringDocument) {
+    _title = initial.title.raw; // add icon handling
+    _content = initial.content;
   } else {
-    _title = props.initialTitle;
-    _content = props.initialContent;
+    _title = initial.title;
+    _content = initial.content;
   }
+  // endregion doc init
+
+  const editor = useEditor({
+    extensions: [...default_extensions, ...extensions],
+    content: _makecontent(_content),
+    onUpdate: ({ editor }) => {
+      const content = editor.getHTML();
+      _oncontentchange(content);
+    },
+  });
+
+  const focustocontent = () => {
+    editor?.chain().focus().run();
+  };
+
   // const [shortcutOpen, setShortcutOpen] = useState<boolean>(false);
 
-  const onTitleReturnHit = () => {
-    // todo - focus to main editor
+  const _ontitlereturnhit = () => {
+    focustocontent();
+  };
+
+  const _ontitlechange = (t: string) => {
+    onTitleChange?.(t);
+  };
+
+  const _oncontentchange = (c: string) => {
+    onContentChange?.(c);
   };
 
   return (
-    <EditorWrap fullWidth={props.fullWidth}>
+    <EditorWrap fullWidth={fullWidth}>
       {/* <button onClick={handleclick}>insert</button> */}
-      <Title onChange={props.onTitleChange} onReturn={onTitleReturnHit}>
+      <Title onChange={_ontitlechange} onReturn={_ontitlereturnhit}>
         {_title}
       </Title>
-      <MainBodyContentEditor
-        onChange={props.onContentChange}
-        initialContent={_content}
-        extensions={props.extensions}
-      />
+      <MainBodyContentEditor editor={editor} />
     </EditorWrap>
   );
+}
+
+function _makecontent(raw: string | BoringContent): string {
+  if (typeof raw == "string") {
+    return raw;
+  }
+  return raw.raw;
 }
 
 const EditorWrap = styled.div<{

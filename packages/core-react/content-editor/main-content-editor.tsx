@@ -2,53 +2,28 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { Node } from "@tiptap/core";
 import { Editor, useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+
 // region block components
 
 // endregion block components
 import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 import { Menu } from "../menu";
-import {
-  PlaceholderConfig,
-  CodeblockConfig,
-  BlockQuoteConfig,
-} from "./configs";
+
 import { BoringContent } from "@boring.so/document-model";
 
 interface MainBodyContentEditorProps {
-  contentmode?: "html" | "json";
+  editor: Editor;
+
   /**
    * initial height of interactive area. defaults to 200px.
    */
   initialHeight?: string;
-  initialContent?: string | BoringContent;
-  extensions?: Node[];
-  onChange?: (content: string) => void;
 }
 
 export function MainBodyContentEditor({
-  contentmode = "html",
-  extensions = [],
   initialHeight,
-  initialContent,
-  onChange,
+  editor,
 }: MainBodyContentEditorProps) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      PlaceholderConfig,
-      CodeblockConfig,
-      BlockQuoteConfig,
-
-      ...extensions,
-    ],
-    content: _content(initialContent),
-    onUpdate: ({ editor }) => {
-      const content = editor.getHTML();
-      onChange?.(content);
-    },
-  });
-
   const focus = () => {
     editor?.chain().focus().run();
   };
@@ -71,13 +46,6 @@ export function MainBodyContentEditor({
       </TouchArea>
     </RootWrapper>
   );
-}
-
-function _content(raw: string | BoringContent): string {
-  if (typeof raw == "string") {
-    return raw;
-  }
-  return raw.raw;
 }
 
 const TouchArea = styled.div<{

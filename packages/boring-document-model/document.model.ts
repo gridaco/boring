@@ -1,6 +1,6 @@
 import { BoringTitle } from "./title.model";
 import { BoringContent } from "./content.model";
-
+import { nanoid } from "nanoid";
 export interface BoringDocumentTemplateConstraint {
   /**
    * id of the template
@@ -9,7 +9,13 @@ export interface BoringDocumentTemplateConstraint {
   constraint: "unconstrained" | "constrained";
 }
 
+export type BoringDocumentId = string;
+
+function autoid(): string {
+  return nanoid();
+}
 export class BoringDocument {
+  id: BoringDocumentId;
   title: BoringTitle;
   content: BoringContent;
   template?: BoringDocumentTemplateConstraint;
@@ -17,11 +23,13 @@ export class BoringDocument {
   constructor({
     title,
     content,
+    id = autoid(),
   }: {
+    id?: BoringDocumentId;
     title?: BoringTitle;
     content: BoringContent;
   }) {
-    (this.title = title), (this.content = content);
+    (this.title = title), (this.content = content), (this.id = id);
   }
 }
 

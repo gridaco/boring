@@ -5,70 +5,91 @@ interface CommandItem {
   title: string;
 }
 
-export function CommandsList(props: {
-  command: (cmd: CommandItem) => void;
+interface Props {
   items: CommandItem[];
-}) {
-  const { items, command } = props;
+  command: (cmd: CommandItem) => void;
+}
 
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+interface State {
+  //
+  selectedIndex: number;
+}
 
-  function upHandler() {
-    setSelectedIndex((selectedIndex + items.length - 1) % items.length);
+export class CommandsList extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedIndex: 0,
+    };
   }
 
-  function downHandler() {
-    setSelectedIndex((selectedIndex + 1) % items.length);
+  upHandler() {
+    this.setState({
+      selectedIndex:
+        (this.state.selectedIndex + this.props.items.length - 1) %
+        this.props.items.length,
+    });
   }
 
-  function enterHandler() {
-    selectItem(selectedIndex);
+  downHandler() {
+    this.setState({
+      selectedIndex: (this.state.selectedIndex + 1) % this.props.items.length,
+    });
   }
 
-  function selectItem(index) {
-    const item = items[index];
+  enterHandler() {
+    this.selectItem(this.state.selectedIndex);
+  }
+
+  selectItem(index) {
+    const item = this.props.items[index];
 
     if (item) {
-      command(item);
+      this.props.command(item);
     }
   }
 
-  function onKeyDown(event) {
+  onKeyDown(event) {
+    console.log("event", event);
     if (event.key === "ArrowUp") {
-      upHandler();
+      this.upHandler();
       return true;
     }
 
     if (event.key === "ArrowDown") {
-      downHandler();
+      this.downHandler();
       return true;
     }
 
     if (event.key === "Enter") {
-      enterHandler();
+      this.enterHandler();
       return true;
     }
 
     return false;
   }
 
-  return (
-    <ItemsHolder onKeyDown={onKeyDown}>
-      {items.map((item, index) => {
-        return (
-          <Item
-            isSelected={index === selectedIndex}
-            key={index}
-            onClick={() => {
-              selectItem(index);
-            }}
-          >
-            {item.title}
-          </Item>
-        );
-      })}
-    </ItemsHolder>
-  );
+  render() {
+    const { items } = this.props;
+    const { selectedIndex } = this.state;
+    return (
+      <ItemsHolder onKeyDown={this.onKeyDown}>
+        {items.map((item, index) => {
+          return (
+            <Item
+              isSelected={index === selectedIndex}
+              key={index}
+              onClick={() => {
+                this.selectItem(index);
+              }}
+            >
+              {item.title}
+            </Item>
+          );
+        })}
+      </ItemsHolder>
+    );
+  }
 }
 
 const ItemsHolder = styled.div`

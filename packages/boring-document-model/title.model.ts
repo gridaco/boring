@@ -1,11 +1,31 @@
 type BoringTitleIcon = string;
 
+// === BoringTitleLike ===
 export type BoringTitleLike = string | PageIconAndName | BoringTitle;
 
+export function boringTitleLikeAsBoringTitle(tl: BoringTitleLike): BoringTitle {
+  if (tl instanceof BoringTitle) {
+    return tl;
+  }
+
+  return new BoringTitle(tl); // since accepts both `string | PageIconAndName` as initializer
+}
+// === BoringTitleLike ===
+
+// === PageIconAndName ===
 export interface PageIconAndName {
   icon?: BoringTitleIcon;
   name: string;
 }
+
+export function isPageIconAndName(p?: PageIconAndName | any): boolean {
+  if (p) {
+    const _maybe = p as PageIconAndName;
+    return _maybe?.name !== undefined;
+  }
+  return false;
+}
+// === PageIconAndName ===
 
 export interface BoringTitle extends PageIconAndName {
   raw: string;

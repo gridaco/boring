@@ -118,6 +118,7 @@ export function Scaffold({
       <Title onChange={_ontitlechange} onReturn={_ontitlereturnhit}>
         {title}
       </Title>
+      <TitleAndEditorSeparator />
       <MainBodyContentEditor editor={editor} />
     </EditorWrap>
   );
@@ -159,6 +160,10 @@ function _makecontent(raw: string | BoringContent): string {
     return raw.raw;
   }
 }
+
+const TitleAndEditorSeparator = styled.div`
+  height: 32px;
+`;
 
 const EditorWrap = styled.div<{
   fullWidth?: boolean;

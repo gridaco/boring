@@ -6,6 +6,7 @@
         "@tiptap/extension-blockquote": "^2.0.0-beta.14",
         "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.30",
         "@tiptap/extension-image": "^2.0.0-beta.14",
+        "@tiptap/extension-link": "^2.0.0-beta.18",
         "@tiptap/extension-mention": "^2.0.0-beta.60",
         "@tiptap/extension-placeholder": "^2.0.0-beta.24",
         "@tiptap/react": "^2.0.0-beta.50",

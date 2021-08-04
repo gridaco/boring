@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "@emotion/styled";
 import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 
@@ -20,14 +20,28 @@ interface TitleProps {
 
 const DEFAULT_PLACEHOLDER_TEXT = "Untitled";
 export function Title(props: TitleProps) {
-  const onkeydown = (e) => {
+  const fieldref = useRef<HTMLInputElement>();
+
+  const shouldReturn = (e) => {
+    // about arrow keycodes - https://stackoverflow.com/a/5597114/5463235
     // 13 = return key
-    if (e.keyCode === 13) {
+    // 40 = down key
+    // 39 = right key
+    const isNewLineEnter = e.keyCode === 13;
+    const isDownKeyPress = e.keyCode === 40;
+    const isCursorMoveRightOnEnd =
+      e.keyCode === 39 &&
+      fieldref.current?.selectionEnd === fieldref.current?.value.length;
+    if (isNewLineEnter || isDownKeyPress || isCursorMoveRightOnEnd) {
       props.onReturn?.();
 
       // disable line break
       e.preventDefault();
     }
+  };
+
+  const onkeydown = (e) => {
+    shouldReturn(e);
   };
 
   const onchange = (e) => {
@@ -46,6 +60,7 @@ export function Title(props: TitleProps) {
         defaultValue={props.children}
         onChange={onchange}
         onKeyDown={onkeydown}
+        ref={fieldref}
         contentEditable
       ></TitleText>
     </_Wrap>

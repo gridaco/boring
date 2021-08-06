@@ -46,8 +46,8 @@ export class BoringDocument {
 export class EmptyDocument extends BoringDocument {
   constructor() {
     super({
-      title: undefined,
-      content: undefined,
+      title: new BoringTitle(""),
+      content: new BoringContent(""),
     });
   }
 }

@@ -61,13 +61,10 @@ export const SlashCommands = Extension.create({
 
             return {
               onStart(props) {
-                component = new ReactRenderer(
-                  CommandsList as any as React.Component,
-                  {
-                    editor: props.editor,
-                    props: props,
-                  }
-                );
+                component = new ReactRenderer(CommandsList as any, {
+                  editor: props.editor,
+                  props: props,
+                });
 
                 popup = tippy("body", {
                   getReferenceClientRect: props.clientRect,

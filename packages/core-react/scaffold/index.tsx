@@ -39,7 +39,7 @@ interface ScaffoldProps {
   initial?: InitialDocumentProp;
   onTitleChange?: (title: string) => void;
 
-  onContentChange?: (content: string) => void;
+  onContentChange?: (content: string, transaction?) => void;
   // endregion document model
 
   config?: EditorConfig;
@@ -107,10 +107,14 @@ export function Scaffold({
           }
           return false; // not handled as wasn't dragging a file so use default behaviour
         },
+        // TODO: when pos = 0, < or ^ key pressed, move to title
+        // handleKeyPress: function (view, event) {
+        //   return true;
+        // },
       },
-      onUpdate: ({ editor }) => {
+      onUpdate: ({ editor, transaction }) => {
         const content = editor.getHTML();
-        _oncontentchange(content);
+        _oncontentchange(content, transaction);
       },
     },
     [content]
@@ -132,10 +136,10 @@ export function Scaffold({
     onTitleChange?.(t);
   };
 
-  const _oncontentchange = (c: string) => {
+  const _oncontentchange = (c: string, transaction?) => {
     service.updateContent(c);
     //
-    onContentChange?.(c);
+    onContentChange?.(c, transaction);
   };
 
   return (

@@ -72,6 +72,7 @@ const _Wrap = styled.div`
 `;
 const TitleText = styled.input`
   border: none;
+  user-select: none;
   :focus {
     outline: none;
   }

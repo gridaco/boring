@@ -2,16 +2,17 @@
     "name": "@boringso/react-core",
     "version": "0.0.0",
     "dependencies": {
-        "@tippyjs/react": "^4.2.5",
-        "@tiptap/extension-blockquote": "^2.0.0-beta.14",
-        "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.30",
-        "@tiptap/extension-image": "^2.0.0-beta.14",
-        "@tiptap/extension-link": "^2.0.0-beta.18",
-        "@tiptap/extension-mention": "^2.0.0-beta.60",
-        "@tiptap/extension-placeholder": "^2.0.0-beta.24",
-        "@tiptap/react": "^2.0.0-beta.50",
-        "@tiptap/starter-kit": "^2.0.0-beta.80",
-        "@tiptap/suggestion": "^2.0.0-beta.58"
+        "@tippyjs/react": "^4.2.6",
+        "@tiptap/core": "^2.0.0-beta.175",
+        "@tiptap/extension-blockquote": "^2.0.0-beta.26",
+        "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.68",
+        "@tiptap/extension-image": "^2.0.0-beta.27",
+        "@tiptap/extension-link": "^2.0.0-beta.37",
+        "@tiptap/extension-mention": "^2.0.0-beta.96",
+        "@tiptap/extension-placeholder": "^2.0.0-beta.48",
+        "@tiptap/react": "^2.0.0-beta.109",
+        "@tiptap/starter-kit": "^2.0.0-beta.184",
+        "@tiptap/suggestion": "^2.0.0-beta.91"
     },
     "devDependencies": {}
 }

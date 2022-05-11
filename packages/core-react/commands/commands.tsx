@@ -50,9 +50,7 @@ export const SlashCommands = Extension.create({
           items: (query) => {
             // @ts-ignore
             return this.options.commands
-              .filter((item) =>
-                item.title.toLowerCase().startsWith(query.toLowerCase())
-              )
+              .filter((item) => item.title.toLowerCase().startsWith(query))
               .slice(0, 10);
           },
           render: () => {

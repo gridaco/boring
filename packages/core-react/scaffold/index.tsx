@@ -57,9 +57,9 @@ export function Scaffold({
   // region doc init
   const initializer = handleDocumentInitialization(initial);
   const id = initializer.id;
-  const [title, setTitle] = useState<string>(initializer.loaded?.title.raw);
+  const [title, setTitle] = useState<string>(initializer.loaded?.title?.raw);
   const [content, setContent] = useState<string>(
-    initializer.loaded?.content.raw
+    initializer.loaded?.content?.raw
   );
 
   useEffect(() => {
@@ -86,6 +86,28 @@ export function Scaffold({
     {
       extensions: [...default_extensions, ...extensions],
       content: finalcontent,
+      editorProps: {
+        handleDrop: function (view, event: DragEvent, slice, moved) {
+          if (!moved && event.dataTransfer && event.dataTransfer.files) {
+            // if dropping external files
+            // the addImage function checks the files are an image upload, and returns the url
+            console.log("file dropped", event.dataTransfer);
+            addImage(event.dataTransfer.files[0]).then((url) => {
+              // this inserts the image with src url into the editor at the position of the drop
+              const { schema } = view.state;
+              const coordinates = view.posAtCoords({
+                left: event.clientX,
+                top: event.clientY,
+              });
+              const node = schema.nodes.image.create({ src: url });
+              const transaction = view.state.tr.insert(coordinates.pos, node);
+              return view.dispatch(transaction);
+            });
+            return true; // drop is handled don't do anything else
+          }
+          return false; // not handled as wasn't dragging a file so use default behaviour
+        },
+      },
       onUpdate: ({ editor }) => {
         const content = editor.getHTML();
         _oncontentchange(content);
@@ -93,6 +115,10 @@ export function Scaffold({
     },
     [content]
   );
+
+  const addImage = async (d) => {
+    return "https://grida.co/";
+  };
 
   const focustocontent = () => {
     editor?.chain().focus().run();
@@ -142,8 +168,8 @@ function handleDocumentInitialization(initial: InitialDocumentProp): {
     };
   } else {
     const _newly = new BoringDocument({
-      title: initial.title,
-      content: initial.content,
+      title: initial?.title,
+      content: initial?.content,
     });
     return {
       id: _newly.id,

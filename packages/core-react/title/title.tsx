@@ -20,7 +20,7 @@ interface TitleProps {
 
 const DEFAULT_PLACEHOLDER_TEXT = "Untitled";
 export function Title(props: TitleProps) {
-  const fieldref = useRef<HTMLInputElement>();
+  const fieldref = useRef<HTMLTextAreaElement>();
 
   const shouldReturn = (e) => {
     // about arrow keycodes - https://stackoverflow.com/a/5597114/5463235
@@ -61,7 +61,6 @@ export function Title(props: TitleProps) {
         onChange={onchange}
         onKeyDown={onkeydown}
         ref={fieldref}
-        contentEditable
       ></TitleText>
     </_Wrap>
   );
@@ -70,9 +69,16 @@ export function Title(props: TitleProps) {
 const _Wrap = styled.div`
   max-width: 100%;
 `;
-const TitleText = styled.input`
+const TitleText = styled.textarea`
   border: none;
   user-select: none;
+  width: 100%;
+  resize: none;
+
+  font-size: 48px;
+  font-weight: bold;
+  font-family: ${DEFAULT_THEME_FONT_FAMILY};
+
   :focus {
     outline: none;
   }
@@ -80,7 +86,4 @@ const TitleText = styled.input`
   ::placeholder {
     color: #e1e1e1;
   }
-  font-size: 48px;
-  font-weight: bold;
-  font-family: ${DEFAULT_THEME_FONT_FAMILY};
 `;

@@ -23,6 +23,8 @@ export type InitialDocumentProp =
   | BoringDocument
   | BoringDocumentId;
 
+export type OnContentChange = (content: string, transaction?) => void;
+
 interface ScaffoldProps {
   /**
    * defaults to false
@@ -39,7 +41,7 @@ interface ScaffoldProps {
   initial?: InitialDocumentProp;
   onTitleChange?: (title: string) => void;
 
-  onContentChange?: (content: string, transaction?) => void;
+  onContentChange?: OnContentChange;
   // endregion document model
 
   config?: EditorConfig;

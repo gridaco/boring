@@ -52,12 +52,13 @@ const TouchArea = styled.div<{
   initialHeight?: string;
 }>`
   cursor: text;
+  width: 100%;
   min-height: ${(p) => p.initialHeight ?? "200px"};
   padding-bottom: 120px;
 `;
 
 const RootWrapper = styled.div`
-  max-width: 50vw; // fixme
+  max-width: 80vw; // fixme
   /* disable outline for contenteditable */
   [contenteditable] {
     outline: 0px solid transparent;

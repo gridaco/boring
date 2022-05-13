@@ -3,14 +3,15 @@ import {
   CodeblockConfig,
   BlockQuoteConfig,
   UnderlineConfig,
+  SlashCommandConfig,
 } from "../extension-configs";
 import StarterKit from "@tiptap/starter-kit";
-import { SlashCommands } from "../commands/commands";
+
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 export const default_extensions = [
   Image,
-  SlashCommands,
+  SlashCommandConfig,
   StarterKit,
   PlaceholderConfig,
   UnderlineConfig,

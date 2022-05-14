@@ -2,17 +2,21 @@ import React, { Component } from "react";
 import { BoringBlockSuggestionItemOnBubbleMenu } from "./command-item";
 import styled from "@emotion/styled";
 
-class CommandList extends Component {
+class CommandList extends Component<{ items: any[] }> {
   state = {
     selectedIndex: 0,
   };
 
-  props = {
-    items: [],
-  };
+  items: [];
+  off: boolean;
+
+  constructor(props) {
+    super(props);
+    this.items = props.items;
+    this.off = this.items.length === 0;
+  }
 
   componentDidUpdate(oldProps) {
-    // @ts-ignore
     if (this.props.items !== oldProps.items) {
       this.setState({
         selectedIndex: 0,
@@ -21,7 +25,10 @@ class CommandList extends Component {
   }
 
   onKeyDown({ event }) {
-    console.log(event);
+    if (this.off) {
+      return false;
+    }
+
     if (event.key === "ArrowUp") {
       this.upHandler();
       return true;
@@ -68,21 +75,26 @@ class CommandList extends Component {
   }
 
   render() {
-    // @ts-ignore
     const { items } = this.props;
     return (
-      <ItemsContainer>
-        {items.map((item, index) => {
-          return (
-            <BoringBlockSuggestionItemOnBubbleMenu
-              selected={index === this.state.selectedIndex}
-              key={index}
-              label={item.title}
-              onClick={() => this.selectItem(index)}
-            />
-          );
-        })}
-      </ItemsContainer>
+      <>
+        {items.length ? (
+          <ItemsContainer>
+            {items.map((item, index) => {
+              return (
+                <BoringBlockSuggestionItemOnBubbleMenu
+                  selected={index === this.state.selectedIndex}
+                  key={index}
+                  label={item.title}
+                  onClick={() => this.selectItem(index)}
+                />
+              );
+            })}
+          </ItemsContainer>
+        ) : (
+          <></>
+        )}
+      </>
     );
   }
 }

@@ -206,6 +206,12 @@ const EditorWrap = styled.div<{
 }>`
   box-sizing: border-box;
   width: 100%;
+  max-width: 1080px;
   height: 100%;
-  padding: 160px ${(p) => (p.fullWidth ? "140px" : "200px")};
+  margin: auto;
+  padding: 160px ${(p) => (p.fullWidth ? "20px" : "80px")};
+
+  @media (max-width: 600px) {
+    padding: 120px 20px;
+  }
 `;

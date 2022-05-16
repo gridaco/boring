@@ -67,7 +67,6 @@ const TouchArea = styled.div<{
 `;
 
 const RootWrapper = styled.div`
-  max-width: 80vw; // fixme
   /* disable outline for contenteditable */
   [contenteditable] {
     outline: 0px solid transparent;

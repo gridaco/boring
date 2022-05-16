@@ -8,6 +8,7 @@ import { Editor, useEditor, EditorContent } from "@tiptap/react";
 // endregion block components
 import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 import { Menu } from "../menu";
+import { FloatingMenu } from "../floating-menu";
 
 import { BoringContent } from "@boring.so/document-model";
 
@@ -40,6 +41,14 @@ export function MainBodyContentEditor({
       {/* <MenuBar editor={editor} /> */}
       <Menu editor={editor} />
       {/* <CommandsConfig /> */}
+      {editor && (
+        <FloatingMenu
+          editor={editor}
+          onAddClick={() => {
+            // TODO: show add menu
+          }}
+        />
+      )}
 
       <TouchArea initialHeight={initialHeight} onClick={onTouchAreaClick}>
         <EditorContentInstance editor={editor} />
@@ -71,6 +80,9 @@ const EditorContentInstance = styled(EditorContent)`
     h1,
     h2,
     h3,
+    h4,
+    h5,
+    h6,
     p {
       color: #222222;
       font-family: ${DEFAULT_THEME_FONT_FAMILY};
@@ -83,8 +95,21 @@ const EditorContentInstance = styled(EditorContent)`
       line-height: 180%;
     }
 
+    h1 {
+      font-size: 30px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    h3 {
+      font-size: 20px;
+    }
+
     /* p only */
     p {
+      font-size: 16px;
       line-height: 150%;
     }
   }

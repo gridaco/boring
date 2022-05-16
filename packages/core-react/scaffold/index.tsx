@@ -123,7 +123,11 @@ export function Scaffold({
   );
 
   const addImage = async (d) => {
-    return "https://grida.co/";
+    console.log("have to upload this resouce", d);
+
+    // return "https://wallpaperaccess.com/full/366398.jpg";
+    return "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5eeea355389655.59822ff824b72.gif";
+    // return "https://grida.co/";
   };
 
   const focustocontent = () => {

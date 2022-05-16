@@ -112,6 +112,10 @@ const EditorContentInstance = styled(EditorContent)`
       font-size: 16px;
       line-height: 150%;
     }
+
+    img {
+      width: 100%;
+    }
   }
 
   /* placeholder's style - https://www.tiptap.dev/api/extensions/placeholder/#placeholder*/

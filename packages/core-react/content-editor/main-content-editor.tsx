@@ -19,11 +19,14 @@ interface MainBodyContentEditorProps {
    * initial height of interactive area. defaults to 200px.
    */
   initialHeight?: string;
+
+  readonly: boolean;
 }
 
 export function MainBodyContentEditor({
   initialHeight,
   editor,
+  readonly,
 }: MainBodyContentEditorProps) {
   const focus = () => {
     editor?.chain().focus().run();
@@ -51,7 +54,7 @@ export function MainBodyContentEditor({
       )}
 
       <TouchArea initialHeight={initialHeight} onClick={onTouchAreaClick}>
-        <EditorContentInstance editor={editor} />
+        <EditorContentInstance readOnly={readonly} editor={editor} />
       </TouchArea>
     </RootWrapper>
   );

@@ -44,7 +44,11 @@ interface ScaffoldProps {
   onContentChange?: OnContentChange;
   // endregion document model
 
+  onTriggerSave?: () => void;
+
   config?: EditorConfig;
+
+  readonly?: boolean;
 }
 
 export function Scaffold({
@@ -55,6 +59,8 @@ export function Scaffold({
   extensions,
   contentmode = "html",
   config = DefaultConfig,
+  readonly = false,
+  onTriggerSave,
 }: ScaffoldProps) {
   // region doc init
   const initializer = handleDocumentInitialization(initial);
@@ -149,13 +155,23 @@ export function Scaffold({
   };
 
   return (
-    <EditorWrap fullWidth={fullWidth}>
+    <EditorWrap
+      fullWidth={fullWidth}
+      onKeyDown={(e) => {
+        // if cmd + s ignore.
+        if (e.metaKey && e.key === "s") {
+          e.preventDefault();
+          e.stopPropagation();
+          onTriggerSave?.();
+        }
+      }}
+    >
       {/* <button onClick={handleclick}>insert</button> */}
       <Title onChange={_ontitlechange} onReturn={_ontitlereturnhit}>
         {title}
       </Title>
       <TitleAndEditorSeparator />
-      <MainBodyContentEditor editor={editor} />
+      <MainBodyContentEditor editor={editor} readonly={readonly} />
     </EditorWrap>
   );
 }

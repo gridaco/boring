@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import styled from "@emotion/styled";
+import TextareaAutoresize from "react-textarea-autosize";
 import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 
 interface TitleProps {
@@ -29,10 +30,12 @@ export function Title(props: TitleProps) {
     // 39 = right key
     const isNewLineEnter = e.keyCode === 13;
     const isDownKeyPress = e.keyCode === 40;
-    const isCursorMoveRightOnEnd =
-      e.keyCode === 39 &&
+    const isCursorEnd =
       fieldref.current?.selectionEnd === fieldref.current?.value.length;
-    if (isNewLineEnter || isDownKeyPress || isCursorMoveRightOnEnd) {
+    const isCursorMoveRightOnEnd = e.keyCode === 39 && isCursorEnd;
+    const isCursorMoveDownOnEnd = isDownKeyPress && isCursorEnd;
+
+    if (isNewLineEnter || isCursorMoveDownOnEnd || isCursorMoveRightOnEnd) {
       props.onReturn?.();
 
       // disable line break
@@ -69,7 +72,7 @@ export function Title(props: TitleProps) {
 const _Wrap = styled.div`
   max-width: 100%;
 `;
-const TitleText = styled.textarea`
+const TitleText = styled(TextareaAutoresize)`
   border: none;
   user-select: none;
   width: 100%;

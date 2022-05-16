@@ -11,7 +11,7 @@ const getSuggestionItems = ({
 
   const lastd = sessionStorage.getItem("last-content");
   sessionStorage.setItem("last-content", d);
-  if (d.length < lastd.length || lastd === d) {
+  if (d.length < (lastd?.length ?? 0) || lastd === d) {
     // if removed or same - it means "/" is not typed.
     // somehow the d is not beign updated with '/' value
     // this may not work when removing and re inserting the same value - '/'
@@ -57,6 +57,7 @@ const getSuggestionItems = ({
     {
       title: "image",
       command: ({ editor, range }) => {
+        // TODO:
         console.log("call some function from parent");
         editor.chain().focus().deleteRange(range).setNode("paragraph").run();
       },

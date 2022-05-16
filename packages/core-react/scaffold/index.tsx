@@ -71,8 +71,8 @@ export function Scaffold({
           setTitle(d.title.raw);
           setContent(d.content.raw);
         } else {
-          setTitle("ERR");
-          setContent("<h3>404 page not found</h3>");
+          setTitle("");
+          setContent("");
         }
       });
     }
@@ -93,7 +93,7 @@ export function Scaffold({
           if (!moved && event.dataTransfer && event.dataTransfer.files) {
             // if dropping external files
             // the addImage function checks the files are an image upload, and returns the url
-            console.log("file dropped", event.dataTransfer);
+            console.log("file dropped", event);
             addImage(event.dataTransfer.files[0]).then((url) => {
               // this inserts the image with src url into the editor at the position of the drop
               const { schema } = view.state;

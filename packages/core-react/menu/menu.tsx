@@ -13,14 +13,24 @@ export function Menu(props: { editor: Editor | null }) {
           tippyOptions={{ duration: 100 }}
           editor={editor}
         >
-          <Item>
+          <Item
+            onClick={() => {
+              const url = window.prompt("enter url");
+              editor
+                .chain()
+                .focus()
+                .setLink({ href: url, target: "_blank" })
+                .run();
+            }}
+            className={editor.isActive("link") ? "is-active" : ""}
+          >
             <Icon></Icon>
             <Link>Link</Link>
           </Item>
           <Divider />
           <Item
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={editor.isActive("quote") ? "is-active" : ""}
+            className={editor.isActive("blockquote") ? "is-active" : ""}
           >
             <Icon id="ic_text_quote" width="18" height="18" viewBox="0 0 18 18">
               <path

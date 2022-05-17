@@ -115,6 +115,7 @@ const MenuWrapper = styled(BubbleMenu)`
   flex-direction: row;
   align-items: center;
   flex: none;
+  border: 1px solid rgba(0, 0, 0, 0.02);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   background-color: white;

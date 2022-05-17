@@ -48,6 +48,7 @@ export function MainBodyContentEditor({
         <FloatingMenu
           editor={editor}
           onAddClick={() => {
+            console.log("add button click");
             // TODO: show add menu
           }}
         />

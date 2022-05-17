@@ -1,7 +1,7 @@
 //
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import { Title } from "../title";
+import { Title, TitleProps } from "../title";
 import { Node } from "@tiptap/core";
 import { MainBodyContentEditor } from "../content-editor";
 import {
@@ -14,6 +14,10 @@ import { EditorConfig, defaults as DefaultConfig } from "@boring.so/config";
 import { Editor, useEditor, EditorContent } from "@tiptap/react";
 import { default_extensions } from "./scaffold-extensions";
 import { BoringDocumentStore } from "@boring.so/store";
+import {
+  get_youtube_video_id,
+  make_youtube_video_embed_url,
+} from "../embeding-utils";
 
 export type InitialDocumentProp =
   | {
@@ -25,7 +29,7 @@ export type InitialDocumentProp =
 
 export type OnContentChange = (content: string, transaction?) => void;
 
-interface ScaffoldProps {
+export interface ScaffoldProps {
   /**
    * defaults to false
    */
@@ -49,6 +53,10 @@ interface ScaffoldProps {
   config?: EditorConfig;
 
   readonly?: boolean;
+
+  fileUploader?: (file: File) => Promise<string | false>;
+
+  titleStyle?: TitleProps["style"];
 }
 
 export function Scaffold({
@@ -61,6 +69,9 @@ export function Scaffold({
   config = DefaultConfig,
   readonly = false,
   onTriggerSave,
+  fileUploader,
+  titleStyle,
+  ...props
 }: ScaffoldProps) {
   // region doc init
   const initializer = handleDocumentInitialization(initial);
@@ -95,12 +106,25 @@ export function Scaffold({
       extensions: [...default_extensions, ...extensions],
       content: finalcontent,
       editorProps: {
+        handlePaste: (view, event: ClipboardEvent, slice) => {
+          console.log("pasted", event, slice, view);
+          const text = event.clipboardData.getData("Text");
+          if (text) {
+            // parse
+            const id = get_youtube_video_id(text);
+            if (id) {
+              addIframe(make_youtube_video_embed_url(id));
+              return true;
+            }
+          }
+          return false;
+        },
         handleDrop: function (view, event: DragEvent, slice, moved) {
           if (!moved && event.dataTransfer && event.dataTransfer.files) {
             // if dropping external files
             // the addImage function checks the files are an image upload, and returns the url
             console.log("file dropped", event);
-            addImage(event.dataTransfer.files[0]).then((url) => {
+            fileUploader?.(event.dataTransfer.files[0]).then((url) => {
               // this inserts the image with src url into the editor at the position of the drop
               const { schema } = view.state;
               const coordinates = view.posAtCoords({
@@ -128,12 +152,10 @@ export function Scaffold({
     [content]
   );
 
-  const addImage = async (d) => {
-    console.log("have to upload this resouce", d);
-
-    // return "https://wallpaperaccess.com/full/366398.jpg";
-    return "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5eeea355389655.59822ff824b72.gif";
-    // return "https://grida.co/";
+  const addIframe = (url: string) => {
+    if (url) {
+      editor?.chain().focus().setIframe({ src: url }).run();
+    }
   };
 
   const focustocontent = () => {
@@ -167,7 +189,11 @@ export function Scaffold({
       }}
     >
       {/* <button onClick={handleclick}>insert</button> */}
-      <Title onChange={_ontitlechange} onReturn={_ontitlereturnhit}>
+      <Title
+        onChange={_ontitlechange}
+        onReturn={_ontitlereturnhit}
+        style={titleStyle}
+      >
         {title}
       </Title>
       <TitleAndEditorSeparator />

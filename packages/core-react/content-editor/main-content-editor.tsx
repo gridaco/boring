@@ -124,7 +124,7 @@ const EditorContentInstance = styled(EditorContent)`
   .ProseMirror p.is-editor-empty:first-of-type::before {
     content: attr(data-placeholder);
     float: left;
-    color: #ced4da;
+    color: rgba(0, 0, 0, 0.3);
     pointer-events: none;
     height: 0;
   }
@@ -135,7 +135,7 @@ const EditorContentInstance = styled(EditorContent)`
   .ProseMirror .is-editor-empty:first-of-type::before {
     content: attr(data-placeholder);
     float: left;
-    color: #ced4da;
+    color: rgba(0, 0, 0, 0.3);
     pointer-events: none;
     height: 0;
   }
@@ -144,7 +144,7 @@ const EditorContentInstance = styled(EditorContent)`
   .ProseMirror .is-empty::before {
     content: attr(data-placeholder);
     float: left;
-    color: #ced4da;
+    color: rgba(0, 0, 0, 0.3);
     pointer-events: none;
     height: 0;
   }

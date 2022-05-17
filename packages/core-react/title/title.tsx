@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import TextareaAutoresize from "react-textarea-autosize";
 import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 
-interface TitleProps {
+export interface TitleProps {
   children: string | undefined;
 
   /**
@@ -11,6 +11,22 @@ interface TitleProps {
    */
   placeholder?: string;
   noplaceholder?: boolean;
+
+  style?: {
+    /**
+     * @default start
+     */
+    textAlign?: React.CSSProperties["textAlign"];
+    /**
+     * @default 48px
+     */
+    fontSize?: React.CSSProperties["fontSize"];
+    fontFamily?: React.CSSProperties["fontFamily"];
+    /**
+     * @default bold
+     */
+    fontWeight?: React.CSSProperties["fontWeight"];
+  };
 
   /**
    * title is only allowed to be single line. when enter key hit, it should be handled.
@@ -60,6 +76,10 @@ export function Title(props: TitleProps) {
             ? undefined
             : props.placeholder ?? DEFAULT_PLACEHOLDER_TEXT
         }
+        textAlign={props.style?.textAlign}
+        fontSize={props.style?.fontSize}
+        fontFamily={props.style?.fontFamily}
+        fontWeight={props.style?.fontWeight}
         defaultValue={props.children}
         onChange={onchange}
         onKeyDown={onkeydown}
@@ -72,21 +92,28 @@ export function Title(props: TitleProps) {
 const _Wrap = styled.div`
   max-width: 100%;
 `;
-const TitleText = styled(TextareaAutoresize)`
+
+const TitleText = styled(TextareaAutoresize)<{
+  textAlign?: React.CSSProperties["textAlign"];
+  fontSize?: React.CSSProperties["fontSize"];
+  fontFamily?: React.CSSProperties["fontFamily"];
+  fontWeight?: React.CSSProperties["fontWeight"];
+}>`
   border: none;
+  background: transparent;
   user-select: none;
   width: 100%;
   resize: none;
-
-  font-size: 48px;
-  font-weight: bold;
-  font-family: ${DEFAULT_THEME_FONT_FAMILY};
+  text-align: ${(props) => props.textAlign ?? "start"};
+  font-size: ${(props) => props.fontSize ?? "48px"};
+  font-weight: ${(props) => props.fontWeight ?? "bold"};
+  font-family: ${(props) => props.fontFamily ?? DEFAULT_THEME_FONT_FAMILY};
 
   :focus {
     outline: none;
   }
 
   ::placeholder {
-    color: #e1e1e1;
+    color: rgba(0, 0, 0, 0.12);
   }
 `;

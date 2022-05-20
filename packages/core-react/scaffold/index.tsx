@@ -123,17 +123,21 @@ export function Scaffold({
           if (!moved && event.dataTransfer && event.dataTransfer.files) {
             // if dropping external files
             // the addImage function checks the files are an image upload, and returns the url
-            console.log("file dropped", event);
             fileUploader?.(event.dataTransfer.files[0]).then((url) => {
-              // this inserts the image with src url into the editor at the position of the drop
-              const { schema } = view.state;
-              const coordinates = view.posAtCoords({
-                left: event.clientX,
-                top: event.clientY,
-              });
-              const node = schema.nodes.image.create({ src: url });
-              const transaction = view.state.tr.insert(coordinates.pos, node);
-              return view.dispatch(transaction);
+              if (url) {
+                // this inserts the image with src url into the editor at the position of the drop
+                const { schema } = view.state;
+                const coordinates = view.posAtCoords({
+                  left: event.clientX,
+                  top: event.clientY,
+                });
+                const node = schema.nodes.image.create({ src: url });
+                const transaction = view.state.tr.insert(coordinates.pos, node);
+                return view.dispatch(transaction);
+              } else {
+                console.error("cannot upload file", event);
+                return false;
+              }
             });
             return true; // drop is handled don't do anything else
           }

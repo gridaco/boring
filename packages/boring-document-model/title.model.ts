@@ -38,15 +38,25 @@ export interface BoringTitle extends PageIconAndName {
 
 export class BoringTitle implements BoringTitle {
   constructor(p: PageIconAndName | string) {
-    if (typeof p == "string") {
-      const _p = parseraw(p);
-      this.icon = _p.icon;
-      this.name = _p.name;
-      this.raw = p;
-    } else {
-      this.icon = p.icon;
-      this.name = p.name;
-      this.raw = buildraw(p);
+    switch (typeof p) {
+      case "string": {
+        const _p = parseraw(p);
+        this.icon = _p.icon;
+        this.name = _p.name;
+        this.raw = p;
+        break;
+      }
+      case "undefined": {
+        this.name = "";
+        this.raw = "";
+        break;
+      }
+      case "object": {
+        this.icon = p.icon;
+        this.name = p.name;
+        this.raw = buildraw(p);
+        break;
+      }
     }
   }
 }

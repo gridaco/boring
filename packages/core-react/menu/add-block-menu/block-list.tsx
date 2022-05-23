@@ -109,14 +109,13 @@ export class BlockList extends Component<{
 }
 
 const ItemsContainer = styled.div`
+  z-index: 9;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   align-items: stretch;
   flex: none;
-  box-shadow: 0px 9px 24px 0px rgba(15, 15, 15, 0.2),
-    0px 3px 3px 6px rgba(15, 15, 15, 0.1),
-    0px 6px 1px 1px rgba(15, 15, 15, 0.05);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border: solid 1px rgb(237, 237, 236);
   border-radius: 4px;
   background-color: white;

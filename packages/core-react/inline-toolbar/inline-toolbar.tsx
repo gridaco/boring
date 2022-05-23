@@ -1,6 +1,13 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled from "@emotion/styled";
 import { Editor, BubbleMenu } from "@tiptap/react";
+import {
+  useFloating,
+  offset,
+  useInteractions,
+  useDismiss,
+} from "@floating-ui/react-dom-interactions";
+import { BoringBubbleLinkInput } from "../menu";
 
 /* TODO: import icon somewhere else */
 export function InlineToolbar(props: { editor: Editor | null }) {
@@ -28,6 +35,68 @@ export function InlineToolbar(props: { editor: Editor | null }) {
   );
 }
 
+function LinkItem({ editor }: { editor: Editor }) {
+  const { x, y, reference, floating, context } = useFloating({
+    middleware: [offset({ mainAxis: 50 })],
+    strategy: "absolute",
+  });
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useDismiss(context, {
+      enabled: true,
+      escapeKey: true,
+      referencePointerDown: true,
+      outsidePointerDown: true,
+    }),
+  ]);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const link = editor.getAttributes("link")["href"];
+
+  return (
+    <>
+      <div
+        ref={floating}
+        {...getFloatingProps()}
+        style={{
+          position: "absolute",
+          display: isOpen ? "block" : "none",
+          left: 0,
+          top: y,
+        }}
+      >
+        {isOpen && (
+          <BoringBubbleLinkInput
+            defaultValue={link}
+            onSubmit={(v) => {
+              if (v) {
+                editor
+                  .chain()
+                  .focus()
+                  .setLink({ href: v, target: "_blank" })
+                  .run();
+              } else {
+                // if input is empty, remove link
+                editor.chain().focus().unsetLink().run();
+              }
+            }}
+          />
+        )}
+      </div>
+      <Item
+        ref={reference}
+        {...getReferenceProps()}
+        onClick={() => {
+          setIsOpen(true);
+        }}
+        className={editor.isActive("link") ? "is-active" : ""}
+      >
+        <Icon></Icon>
+        <Link>Link</Link>
+      </Item>
+    </>
+  );
+}
+
 function Items({
   editor,
   type,
@@ -48,20 +117,7 @@ function Items({
     case "text": {
       return (
         <>
-          <Item
-            onClick={() => {
-              const url = window.prompt("enter url");
-              editor
-                .chain()
-                .focus()
-                .setLink({ href: url, target: "_blank" })
-                .run();
-            }}
-            className={editor.isActive("link") ? "is-active" : ""}
-          >
-            <Icon></Icon>
-            <Link>Link</Link>
-          </Item>
+          <LinkItem editor={editor} />
           <Divider />
           <Item
             onClick={() => editor.chain().focus().toggleBlockquote().run()}

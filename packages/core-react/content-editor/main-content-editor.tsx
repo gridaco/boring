@@ -10,8 +10,6 @@ import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 import { InlineToolbar } from "../inline-toolbar";
 import { SideFloatingMenu } from "../floating-menu";
 import { BoringContent } from "@boring.so/document-model";
-import Dialog from "@material-ui/core/Dialog";
-import { AddBlockMenu } from "../menu";
 
 interface MainBodyContentEditorProps {
   editor: Editor;
@@ -29,11 +27,6 @@ export function MainBodyContentEditor({
   editor,
   readonly,
 }: MainBodyContentEditorProps) {
-  const [addMenuShown, setAddMenuShown] = useState(false);
-
-  const showAddMenu = () => setAddMenuShown(true);
-  const hideAddMenu = () => setAddMenuShown(false);
-
   const focus = () => {
     editor?.chain().focus().run();
   };
@@ -46,18 +39,15 @@ export function MainBodyContentEditor({
   };
 
   return (
-    <RootWrapper>
+    <MainContentEditorRootWrapper>
       {/* <MenuBar editor={editor} /> */}
       <InlineToolbar editor={editor} />
       {/* <CommandsConfig /> */}
-      <Dialog maxWidth={"xs"} open={addMenuShown} onClose={hideAddMenu}>
-        <AddBlockMenu editor={editor} />
-      </Dialog>
-      {editor && <SideFloatingMenu editor={editor} onAddClick={showAddMenu} />}
+      {editor && <SideFloatingMenu editor={editor} />}
       <TouchArea initialHeight={initialHeight} onClick={onTouchAreaClick}>
         <EditorContentInstance readOnly={readonly} editor={editor} />
       </TouchArea>
-    </RootWrapper>
+    </MainContentEditorRootWrapper>
   );
 }
 
@@ -70,11 +60,13 @@ const TouchArea = styled.div<{
   padding-bottom: 120px;
 `;
 
-const RootWrapper = styled.div`
+const MainContentEditorRootWrapper = styled.div`
   /* disable outline for contenteditable */
   [contenteditable] {
     outline: 0px solid transparent;
   }
+
+  min-height: 400px;
 `;
 
 const EditorContentInstance = styled(EditorContent)`

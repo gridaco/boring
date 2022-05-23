@@ -19,7 +19,7 @@ export function BoringBlockSuggestionItemOnBubbleMenu({
       {preview && <PreviewContainer>{preview}</PreviewContainer>}
       <TextContainer>
         <Label>{label}</Label>
-        <Helptext>{helptext}</Helptext>
+        {helptext && <Helptext>{helptext}</Helptext>}
       </TextContainer>
     </Container>
   );
@@ -38,7 +38,8 @@ const Container = styled.div`
   padding: 8px 16px;
   &[data-selected="true"],
   :hover {
-    background-color: #efefef;
+    background-color: rgba(0, 0, 0, 0.05);
+    /* #efefef; */
   }
 `;
 
@@ -48,7 +49,7 @@ const PreviewContainer = styled.div`
   flex-direction: row;
   align-items: center;
   flex: none;
-  border: solid 1px rgb(237, 237, 236);
+  border: solid 1px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   width: 60px;
   height: 60px;

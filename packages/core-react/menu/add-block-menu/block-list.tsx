@@ -2,12 +2,8 @@ import React, { Component } from "react";
 import type { Editor } from "@tiptap/react";
 import { BoringBlockSuggestionItemOnBubbleMenu } from "./block-item";
 import styled from "@emotion/styled";
-
-interface CommandItem {
-  title: string;
-  icon?: string;
-  command: ({ editor, range }: { editor: Editor; range }) => void;
-}
+import { CommandItem } from "./items";
+import { BoringBlockIcon } from "./icons";
 
 export class BlockList extends Component<{
   items: CommandItem[];
@@ -89,16 +85,20 @@ export class BlockList extends Component<{
       <>
         {items.length ? (
           <ItemsContainer>
+            <div style={{ marginTop: 8 }} />
             {items.map((item, index) => {
               return (
                 <BoringBlockSuggestionItemOnBubbleMenu
                   selected={index === this.state.selectedIndex}
                   key={index}
+                  preview={<BoringBlockIcon name={item.icon} />}
                   label={item.title}
+                  helptext={item.subtitle}
                   onClick={() => this.selectItem(index)}
                 />
               );
             })}
+            <div style={{ marginBottom: 8 }} />
           </ItemsContainer>
         ) : (
           <></>
@@ -121,4 +121,6 @@ const ItemsContainer = styled.div`
   background-color: white;
   box-sizing: border-box;
   padding: 0px 8px;
+  max-height: 400px;
+  overflow-y: scroll;
 `;

@@ -105,6 +105,10 @@ export function Scaffold({
     {
       extensions: [...default_extensions, ...extensions],
       content: finalcontent,
+      onTransaction: ({ editor, transaction }) => {
+        // editor.state.selection.anchor;
+        // editor.view.posAtDOM()
+      },
       editorProps: {
         handlePaste: (view, event: ClipboardEvent, slice) => {
           console.log("pasted", event, slice, view);

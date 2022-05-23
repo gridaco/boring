@@ -5,6 +5,7 @@ import { AddBlockMenuBody } from "../menu/add-block-menu";
 const renderItems = () => {
   let component;
   let popup;
+  let hidden = false;
 
   return {
     onStart: (props) => {
@@ -33,8 +34,13 @@ const renderItems = () => {
     onKeyDown(props) {
       if (props.event.key === "Escape") {
         popup[0].hide();
+        hidden = true;
 
         return true;
+      }
+
+      if (hidden) {
+        return false;
       }
 
       return component.ref?.onKeyDown(props);

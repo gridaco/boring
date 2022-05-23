@@ -3,16 +3,51 @@ import styled from "@emotion/styled";
 import { Editor, BubbleMenu } from "@tiptap/react";
 
 /* TODO: import icon somewhere else */
-export function Menu(props: { editor: Editor | null }) {
+export function InlineToolbar(props: { editor: Editor | null }) {
   const { editor } = props;
+  if (!editor) {
+    return <></>;
+  }
+
+  const { view, state } = editor;
+  const { from, to } = view.state.selection;
+  const text = state.doc.textBetween(from, to, "");
+
+  // - on text
+  // - on image
+  // - on embeddings
+  // - on divider
+
+  const isText = text && text !== "";
+  const isImage = editor.isActive("image");
+
   return (
-    <>
-      {editor && (
-        <MenuWrapper
-          className="bubble-menu"
-          tippyOptions={{ duration: 100 }}
-          editor={editor}
-        >
+    <MenuWrapper tippyOptions={{ duration: 100 }} editor={editor}>
+      <Items type={isText ? "text" : "other"} editor={editor} />
+    </MenuWrapper>
+  );
+}
+
+function Items({
+  editor,
+  type,
+}: {
+  editor: Editor;
+  type: "text" | "image" | "other";
+}) {
+  const isLink = editor.isActive("link");
+  const isBlockquote = editor.isActive("blockquote");
+  const isBold = editor.isActive("bold");
+  const isItalic = editor.isActive("italic");
+  const isUnderline = editor.isActive("underline");
+  const isStrike = editor.isActive("strike");
+  const isH1 = editor.isActive("heading", { level: 1 });
+  const isH2 = editor.isActive("heading", { level: 2 });
+
+  switch (type) {
+    case "text": {
+      return (
+        <>
           <Item
             onClick={() => {
               const url = window.prompt("enter url");
@@ -30,7 +65,7 @@ export function Menu(props: { editor: Editor | null }) {
           <Divider />
           <Item
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={editor.isActive("blockquote") ? "is-active" : ""}
+            className={isBlockquote ? "is-active" : ""}
           >
             <Icon id="ic_text_quote" width="18" height="18" viewBox="0 0 18 18">
               <path
@@ -41,7 +76,7 @@ export function Menu(props: { editor: Editor | null }) {
           </Item>
           <Item
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive("bold") ? "is-active" : ""}
+            className={isBold ? "is-active" : ""}
           >
             <Icon id="ic_text_bold" width="18" height="18" viewBox="0 0 18 18">
               <path
@@ -52,7 +87,7 @@ export function Menu(props: { editor: Editor | null }) {
           </Item>
           <Item
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={editor.isActive("italic") ? "is-active" : ""}
+            className={isItalic ? "is-active" : ""}
           >
             <Icon
               id="ic_text_italic"
@@ -68,7 +103,7 @@ export function Menu(props: { editor: Editor | null }) {
           </Item>
           <Item
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={editor.isActive("underline") ? "is-active" : ""}
+            className={isUnderline ? "is-active" : ""}
           >
             <Icon
               id="ic_text_underline"
@@ -88,7 +123,7 @@ export function Menu(props: { editor: Editor | null }) {
           </Item>
           <Item
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={editor.isActive("strike") ? "is-active" : ""}
+            className={isStrike ? "is-active" : ""}
           >
             <Icon
               id="ic_text_strike_through"
@@ -102,10 +137,32 @@ export function Menu(props: { editor: Editor | null }) {
               />
             </Icon>
           </Item>
-        </MenuWrapper>
-      )}
-    </>
-  );
+          <Item
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+            className={isH1 ? "is-active" : ""}
+          >
+            H1
+          </Item>
+          <Item
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+            className={isH2 ? "is-active" : ""}
+          >
+            H2
+          </Item>
+        </>
+      );
+    }
+    case "image": {
+      return <></>;
+    }
+    case "other": {
+      return <></>;
+    }
+  }
 }
 
 // https://www.tiptap.dev/examples/menus

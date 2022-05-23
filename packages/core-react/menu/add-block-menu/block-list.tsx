@@ -1,8 +1,18 @@
 import React, { Component } from "react";
-import { BoringBlockSuggestionItemOnBubbleMenu } from "./command-item";
+import type { Editor } from "@tiptap/react";
+import { BoringBlockSuggestionItemOnBubbleMenu } from "./block-item";
 import styled from "@emotion/styled";
 
-class CommandList extends Component<{ items: any[] }> {
+interface CommandItem {
+  title: string;
+  icon?: string;
+  command: ({ editor, range }: { editor: Editor; range }) => void;
+}
+
+export class BlockList extends Component<{
+  items: CommandItem[];
+  command?: (c: CommandItem) => void;
+}> {
   state = {
     selectedIndex: 0,
   };
@@ -69,8 +79,7 @@ class CommandList extends Component<{ items: any[] }> {
     const item = this.props.items[index];
 
     if (item) {
-      // @ts-ignore
-      this.props.command(item);
+      this.props.command?.(item);
     }
   }
 
@@ -114,5 +123,3 @@ const ItemsContainer = styled.div`
   box-sizing: border-box;
   padding: 0px 8px;
 `;
-
-export default CommandList;

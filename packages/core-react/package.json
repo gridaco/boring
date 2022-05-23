@@ -2,6 +2,7 @@
     "name": "@boringso/react-core",
     "version": "0.0.0",
     "dependencies": {
+        "@floating-ui/react-dom-interactions": "^0.6.1",
         "@tippyjs/react": "^4.2.6",
         "@tiptap/core": "^2.0.0-beta.175",
         "@tiptap/extension-blockquote": "^2.0.0-beta.26",

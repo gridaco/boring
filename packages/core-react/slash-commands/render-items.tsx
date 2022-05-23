@@ -1,6 +1,6 @@
 import { ReactRenderer } from "@tiptap/react";
 import tippy from "tippy.js";
-import CommandsList from "./commands-list";
+import { AddBlockMenuBody } from "../menu/add-block-menu";
 
 const renderItems = () => {
   let component;
@@ -8,7 +8,7 @@ const renderItems = () => {
 
   return {
     onStart: (props) => {
-      component = new ReactRenderer(CommandsList, {
+      component = new ReactRenderer(AddBlockMenuBody, {
         props,
         editor: props.editor,
       });

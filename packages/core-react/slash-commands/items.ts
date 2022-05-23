@@ -43,15 +43,9 @@ const getSuggestionItems = ({
       },
     },
     {
-      title: "bold",
+      title: "Paragraph",
       command: ({ editor, range }) => {
-        editor.chain().focus().deleteRange(range).setMark("bold").run();
-      },
-    },
-    {
-      title: "italic",
-      command: ({ editor, range }) => {
-        editor.chain().focus().deleteRange(range).setMark("italic").run();
+        editor.chain().focus().deleteRange(range).setNode("paragraph").run();
       },
     },
     {

@@ -7,10 +7,11 @@ import { Editor, useEditor, EditorContent } from "@tiptap/react";
 
 // endregion block components
 import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
-import { Menu } from "../menu";
-import { FloatingMenu } from "../floating-menu";
-
+import { InlineToolbar } from "../inline-toolbar";
+import { SideFloatingMenu } from "../floating-menu";
 import { BoringContent } from "@boring.so/document-model";
+import Dialog from "@material-ui/core/Dialog";
+import { AddBlockMenu } from "../menu";
 
 interface MainBodyContentEditorProps {
   editor: Editor;
@@ -28,6 +29,11 @@ export function MainBodyContentEditor({
   editor,
   readonly,
 }: MainBodyContentEditorProps) {
+  const [addMenuShown, setAddMenuShown] = useState(false);
+
+  const showAddMenu = () => setAddMenuShown(true);
+  const hideAddMenu = () => setAddMenuShown(false);
+
   const focus = () => {
     editor?.chain().focus().run();
   };
@@ -42,18 +48,12 @@ export function MainBodyContentEditor({
   return (
     <RootWrapper>
       {/* <MenuBar editor={editor} /> */}
-      <Menu editor={editor} />
+      <InlineToolbar editor={editor} />
       {/* <CommandsConfig /> */}
-      {editor && (
-        <FloatingMenu
-          editor={editor}
-          onAddClick={() => {
-            console.log("add button click");
-            // TODO: show add menu
-          }}
-        />
-      )}
-
+      <Dialog maxWidth={"xs"} open={addMenuShown} onClose={hideAddMenu}>
+        <AddBlockMenu editor={editor} />
+      </Dialog>
+      {editor && <SideFloatingMenu editor={editor} onAddClick={showAddMenu} />}
       <TouchArea initialHeight={initialHeight} onClick={onTouchAreaClick}>
         <EditorContentInstance readOnly={readonly} editor={editor} />
       </TouchArea>
@@ -87,7 +87,7 @@ const EditorContentInstance = styled(EditorContent)`
     h5,
     h6,
     p {
-      color: #222222;
+      color: rgba(0, 0, 0, 0.87);
       font-family: ${DEFAULT_THEME_FONT_FAMILY};
       line-height: 110%;
     }
@@ -118,6 +118,17 @@ const EditorContentInstance = styled(EditorContent)`
 
     img {
       width: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      height: 400px;
+    }
+
+    hr {
+      outline: none;
+      border: none;
+      border-bottom: solid 1px rgba(0, 0, 0, 0.12);
     }
   }
 

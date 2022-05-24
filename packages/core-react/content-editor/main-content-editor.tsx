@@ -109,13 +109,25 @@ const EditorContentInstance = styled(EditorContent)`
     }
 
     img {
-      position: relative;
+      border-radius: 2px;
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 2px;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    img,
+    video {
+      margin-bottom: 4px;
       &.ProseMirror-selectednode {
         outline: 2px solid rgba(0, 0, 0, 0.2);
       }

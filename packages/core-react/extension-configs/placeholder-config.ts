@@ -2,7 +2,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 
 export const PlaceholderConfig = Placeholder.configure({
   showOnlyCurrent: true,
-  placeholder: ({ node }) => {
+  placeholder: ({ node, editor, hasAnchor }) => {
     const headingPlaceholders = {
       1: "Heading 1",
       2: "Heading 2",

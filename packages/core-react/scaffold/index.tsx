@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { Title, TitleProps } from "../title";
 import { Node } from "@tiptap/core";
 import { MainBodyContentEditor } from "../content-editor";
+import type { EditorView } from "prosemirror-view";
 import {
   BoringContent,
   BoringDocument,
@@ -125,24 +126,39 @@ export function Scaffold({
         },
         handleDrop: function (view, event: DragEvent, slice, moved) {
           if (!moved && event.dataTransfer && event.dataTransfer.files) {
+            const coordinates = view.posAtCoords({
+              left: event.clientX,
+              top: event.clientY,
+            });
             // if dropping external files
             // the addImage function checks the files are an image upload, and returns the url
-            fileUploader?.(event.dataTransfer.files[0]).then((url) => {
-              if (url) {
-                // this inserts the image with src url into the editor at the position of the drop
-                const { schema } = view.state;
-                const coordinates = view.posAtCoords({
-                  left: event.clientX,
-                  top: event.clientY,
-                });
-                const node = schema.nodes.image.create({ src: url });
-                const transaction = view.state.tr.insert(coordinates.pos, node);
-                return view.dispatch(transaction);
-              } else {
-                console.error("cannot upload file", event);
-                return false;
-              }
-            });
+            for (let i = 0; i < event.dataTransfer.files.length; i++) {
+              const file = event.dataTransfer.files.item(i);
+              fileUploader?.(file).then((url) => {
+                if (url) {
+                  if (file.type.includes("image")) {
+                    return addImage(
+                      // @ts-ignore
+                      view,
+                      url,
+                      coordinates.pos
+                    );
+                  }
+
+                  if (file.type.includes("video")) {
+                    return addVideo(
+                      // @ts-ignore
+                      view,
+                      url,
+                      coordinates.pos
+                    );
+                  }
+                } else {
+                  console.error("cannot upload file", event);
+                  return false;
+                }
+              });
+            }
             return true; // drop is handled don't do anything else
           }
           return false; // not handled as wasn't dragging a file so use default behaviour
@@ -164,6 +180,21 @@ export function Scaffold({
     if (url) {
       editor?.chain().focus().setIframe({ src: url }).run();
     }
+  };
+
+  // this inserts the image with src url into the editor at the position of the drop
+  const addImage = (view: EditorView<any>, url: string, pos: number) => {
+    const { schema } = view.state;
+    const node = schema.nodes.image.create({ src: url });
+    const transaction = view.state.tr.insert(pos, node);
+    return view.dispatch(transaction);
+  };
+
+  const addVideo = (view: EditorView<any>, url: string, pos: number) => {
+    const { schema } = view.state;
+    const node = schema.nodes.video.create({ src: url });
+    const transaction = view.state.tr.insert(pos, node);
+    return view.dispatch(transaction);
   };
 
   const focustocontent = () => {

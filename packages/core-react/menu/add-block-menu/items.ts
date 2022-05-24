@@ -5,6 +5,8 @@ import tippy from "tippy.js";
 import {
   get_youtube_video_id,
   make_youtube_video_embed_url,
+  get_vimeo_video_id,
+  make_vimeo_video_embed_url,
 } from "../../embeding-utils";
 
 export interface CommandItem {
@@ -142,17 +144,36 @@ const getSuggestionItems = (
             if (_url) {
               const url = new URL(_url).toString();
               // parse the url, make the embed url
-              const id = get_youtube_video_id(url);
-              if (id) {
-                const src = make_youtube_video_embed_url(id);
-                editor
-                  .chain()
-                  .focus()
-                  .deleteRange(range)
-                  .setIframe({ src: src })
-                  .run();
-              } else {
-                alert("Not a valid Youtube URL");
+              if (_url.includes("youtube.com")) {
+                const id = get_youtube_video_id(url);
+                if (id) {
+                  const src = make_youtube_video_embed_url(id);
+                  editor
+                    .chain()
+                    .focus()
+                    .deleteRange(range)
+                    .setIframe({ src: src, allowfullscreen: true })
+                    .run();
+                } else {
+                  alert("Not a valid Youtube URL");
+                }
+                return;
+              }
+
+              if (_url.includes("vimeo.com")) {
+                const id = get_vimeo_video_id(url);
+                if (id) {
+                  const src = make_vimeo_video_embed_url(id);
+                  editor
+                    .chain()
+                    .focus()
+                    .deleteRange(range)
+                    .setIframe({ src: src, allowfullscreen: true })
+                    .run();
+                } else {
+                  alert("Not a valid Vimeo URL");
+                }
+                return;
               }
             }
           } catch (e) {

@@ -104,7 +104,12 @@ export function Scaffold({
   const finalcontent = _makecontent(content);
   const editor = useEditor(
     {
-      extensions: [...default_extensions, ...extensions],
+      extensions: [
+        ...default_extensions({
+          onUploadFile: fileUploader,
+        }),
+        ...extensions,
+      ],
       content: finalcontent,
       onTransaction: ({ editor, transaction }) => {
         // editor.state.selection.anchor;

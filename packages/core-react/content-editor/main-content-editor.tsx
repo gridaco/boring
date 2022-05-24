@@ -130,7 +130,9 @@ const EditorContentInstance = styled(EditorContent)`
       margin-bottom: 4px;
       &.ProseMirror-selectednode {
         outline: 2px solid rgba(0, 0, 0, 0.2);
+        cursor: grab;
       }
+      background-color: rgba(0, 0, 0, 0.2);
     }
 
     iframe {

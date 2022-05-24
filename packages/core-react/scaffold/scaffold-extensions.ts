@@ -11,11 +11,15 @@ import Link from "@tiptap/extension-link";
 import Iframe from "../blocks/iframe-block";
 import Video from "../blocks/video-block";
 
-export const default_extensions = [
+interface ExtensionsProps {
+  onUploadFile: (file: File) => Promise<string | false>;
+}
+
+export const default_extensions = (props: ExtensionsProps) => [
   Image,
   Iframe,
   Video,
-  SlashCommandConfig,
+  SlashCommandConfig(props),
   StarterKit,
   PlaceholderConfig,
   UnderlineConfig,

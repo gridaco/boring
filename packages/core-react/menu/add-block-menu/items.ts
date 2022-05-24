@@ -18,9 +18,11 @@ const getSuggestionItems = (
   {
     editor,
     query = "",
+    onUploadFile,
   }: {
     editor: Editor;
     query?: string;
+    onUploadFile: (file: File) => Promise<string | false>;
   },
   ...args
 ): CommandItem[] => {
@@ -89,10 +91,41 @@ const getSuggestionItems = (
       icon: "image",
       subtitle: "Put an image from url or via upload",
       command: ({ editor, range }) => {
-        // TODO:
-        console.log("call some function from parent");
-        const url = window.prompt("image url");
-        editor.chain().focus().deleteRange(range).setImage({ src: url }).run();
+        // to dismiss the menu
+        editor.chain().focus().deleteRange(range).run();
+        // open file input
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.style.display = "none";
+        input.onchange = async () => {
+          const file = input.files[0];
+          if (!file) {
+            return;
+          }
+
+          onUploadFile(file)
+            .then((url) => {
+              if (url) {
+                editor
+                  .chain()
+                  .focus()
+                  .deleteRange(range)
+                  .setImage({ src: url })
+                  .run();
+              } else {
+                alert("could not upload file, please try again.");
+              }
+            })
+            .finally(() => {
+              input.remove();
+            });
+        };
+        document.body.appendChild(input);
+
+        input.click();
+
+        return true;
       },
     },
     <CommandItem>{
@@ -100,29 +133,32 @@ const getSuggestionItems = (
       icon: "video",
       subtitle: "Embed a Youtube or Vimeo video",
       command: ({ editor, range }) => {
-        // TODO:
-        try {
-          const _url = window.prompt("Enter a Youtube or Vimeo video url");
+        // dismiss the menu
+        editor.chain().focus().deleteRange(range).run();
+        setTimeout(() => {
+          try {
+            const _url = window.prompt("Enter a Youtube or Vimeo video url");
 
-          if (_url) {
-            const url = new URL(_url).toString();
-            // parse the url, make the embed url
-            const id = get_youtube_video_id(url);
-            if (id) {
-              const src = make_youtube_video_embed_url(id);
-              editor
-                .chain()
-                .focus()
-                .deleteRange(range)
-                .setIframe({ src: src })
-                .run();
-            } else {
-              alert("Not a valid Youtube URL");
+            if (_url) {
+              const url = new URL(_url).toString();
+              // parse the url, make the embed url
+              const id = get_youtube_video_id(url);
+              if (id) {
+                const src = make_youtube_video_embed_url(id);
+                editor
+                  .chain()
+                  .focus()
+                  .deleteRange(range)
+                  .setIframe({ src: src })
+                  .run();
+              } else {
+                alert("Not a valid Youtube URL");
+              }
             }
+          } catch (e) {
+            // dismiss
           }
-        } catch (e) {
-          // dismiss
-        }
+        }, 100);
       },
     },
   ]

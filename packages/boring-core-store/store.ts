@@ -40,6 +40,9 @@ export class BoringDocumentsStore {
   }
 
   async get(id: string): Promise<BoringDocument> {
+    if (!this.tmpstore) {
+      return; // ssr
+    }
     return this.tmpstore.has(id)
       ? this.tmpstore.get(id)
       : await (await this.db()).get(_boring_documents_store_name, id);

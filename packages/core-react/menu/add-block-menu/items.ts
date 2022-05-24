@@ -1,5 +1,12 @@
-import { Editor } from "@tiptap/react";
+import { Editor, ReactRenderer } from "@tiptap/react";
 import type { BoringBlockIconType } from "./icons";
+import { AddImageBlockMenu } from "../add-image-block-menu";
+import tippy from "tippy.js";
+import {
+  get_youtube_video_id,
+  make_youtube_video_embed_url,
+} from "../../embeding-utils";
+
 export interface CommandItem {
   title: string;
   subtitle?: string;
@@ -7,13 +14,16 @@ export interface CommandItem {
   command: ({ editor, range }: { editor: Editor; range }) => void;
 }
 
-const getSuggestionItems = ({
-  editor,
-  query = "",
-}: {
-  editor: Editor;
-  query?: string;
-}): CommandItem[] => {
+const getSuggestionItems = (
+  {
+    editor,
+    query = "",
+  }: {
+    editor: Editor;
+    query?: string;
+  },
+  ...args
+): CommandItem[] => {
   // [(enable this to disable slash commands on revisited slashes.)]
   // const d = JSON.stringify(editor.getJSON());
   // const lastd = sessionStorage.getItem("last-content");
@@ -81,7 +91,8 @@ const getSuggestionItems = ({
       command: ({ editor, range }) => {
         // TODO:
         console.log("call some function from parent");
-        // editor.chain().focus().deleteRange(range).setNode("paragraph").run();
+        const url = window.prompt("image url");
+        editor.chain().focus().deleteRange(range).setImage({ src: url }).run();
       },
     },
     <CommandItem>{
@@ -90,15 +101,27 @@ const getSuggestionItems = ({
       subtitle: "Embed a Youtube or Vimeo video",
       command: ({ editor, range }) => {
         // TODO:
-        console.log("call some function from parent");
-        const url = window.prompt("URL");
-        if (url) {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .setIframe({ src: url })
-            .run();
+        try {
+          const _url = window.prompt("Enter a Youtube or Vimeo video url");
+
+          if (_url) {
+            const url = new URL(_url).toString();
+            // parse the url, make the embed url
+            const id = get_youtube_video_id(url);
+            if (id) {
+              const src = make_youtube_video_embed_url(id);
+              editor
+                .chain()
+                .focus()
+                .deleteRange(range)
+                .setIframe({ src: src })
+                .run();
+            } else {
+              alert("Not a valid Youtube URL");
+            }
+          }
+        } catch (e) {
+          // dismiss
         }
       },
     },

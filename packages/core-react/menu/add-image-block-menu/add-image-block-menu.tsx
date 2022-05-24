@@ -2,5 +2,5 @@ import React from "react";
 //
 
 export function AddImageBlockMenu() {
-  return <></>;
+  return <>Add an image</>;
 }

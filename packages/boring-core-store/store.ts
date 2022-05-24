@@ -40,22 +40,25 @@ export class BoringDocumentsStore {
   }
 
   async get(id: string): Promise<BoringDocument> {
-    if (!this.tmpstore) {
-      return; // ssr
-    }
-    return this.tmpstore.has(id)
-      ? this.tmpstore.get(id)
-      : await (await this.db()).get(_boring_documents_store_name, id);
+    try {
+      return this.tmpstore.has(id)
+        ? this.tmpstore.get(id)
+        : await (await this.db()).get(_boring_documents_store_name, id);
+    } catch (e) {}
   }
 
   async set(doc: BoringDocument) {
-    this.tmpstore.set(doc.id, doc);
-    await (await this.db()).add(_boring_documents_store_name, doc);
-    this.tmpstore.delete(doc.id);
+    try {
+      this.tmpstore.set(doc.id, doc);
+      await (await this.db()).add(_boring_documents_store_name, doc);
+      this.tmpstore.delete(doc.id);
+    } catch (e) {}
   }
 
   async put(doc: BoringDocument) {
-    await (await this.db()).put(_boring_documents_store_name, doc);
+    try {
+      await (await this.db()).put(_boring_documents_store_name, doc);
+    } catch (e) {}
   }
 }
 

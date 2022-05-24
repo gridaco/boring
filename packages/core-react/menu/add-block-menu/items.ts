@@ -100,7 +100,7 @@ const getSuggestionItems = (
         input.style.display = "none";
         input.onchange = async () => {
           const file = input.files[0];
-          if (!file) {
+          if (!file || !file.type.includes("image/")) {
             return;
           }
 

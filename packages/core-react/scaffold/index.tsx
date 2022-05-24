@@ -206,8 +206,12 @@ export function Scaffold({
     editor?.chain().focus().run();
   };
 
+  const focustotop = () => {
+    editor?.chain().focus("start").run();
+  };
+
   const _ontitlereturnhit = () => {
-    focustocontent();
+    focustotop();
   };
 
   const _ontitlechange = (t: string) => {

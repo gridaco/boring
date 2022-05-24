@@ -109,7 +109,16 @@ const EditorContentInstance = styled(EditorContent)`
     }
 
     img {
+      position: relative;
       width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 2px;
+      margin-left: auto;
+      margin-right: auto;
+      &.ProseMirror-selectednode {
+        outline: 2px solid rgba(0, 0, 0, 0.2);
+      }
     }
 
     iframe {

@@ -20,12 +20,15 @@ interface MainBodyContentEditorProps {
   initialHeight?: string;
 
   readonly: boolean;
+
+  onUploadFile: (file: File) => Promise<string | false>;
 }
 
 export function MainBodyContentEditor({
   initialHeight,
   editor,
   readonly,
+  onUploadFile,
 }: MainBodyContentEditorProps) {
   const focus = () => {
     editor?.chain().focus().run();
@@ -43,7 +46,9 @@ export function MainBodyContentEditor({
       {/* <MenuBar editor={editor} /> */}
       <InlineToolbar editor={editor} />
       {/* <CommandsConfig /> */}
-      {editor && <SideFloatingMenu editor={editor} />}
+      {editor && (
+        <SideFloatingMenu onUploadFile={onUploadFile} editor={editor} />
+      )}
       <TouchArea initialHeight={initialHeight} onClick={onTouchAreaClick}>
         <EditorContentInstance readOnly={readonly} editor={editor} />
       </TouchArea>

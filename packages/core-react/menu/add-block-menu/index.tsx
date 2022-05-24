@@ -3,7 +3,13 @@ import { BlockList as AddBlockMenuBody } from "./block-list";
 import { Editor } from "@tiptap/react";
 import getSuggestionItems from "./items";
 
-export function AddBlockMenu({ editor }: { editor: Editor }) {
+export function AddBlockMenu({
+  editor,
+  onUploadFile,
+}: {
+  editor: Editor;
+  onUploadFile: (file: File) => Promise<string | false>;
+}) {
   const ref = useRef<HTMLDivElement>();
   useEffect(() => {
     // focus to this element on mount
@@ -40,7 +46,7 @@ export function AddBlockMenu({ editor }: { editor: Editor }) {
             ],
           });
         }}
-        items={getSuggestionItems({ editor })}
+        items={getSuggestionItems({ editor, onUploadFile })}
       />
     </div>
   );

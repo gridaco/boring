@@ -109,12 +109,12 @@ export function Scaffold({
           onUploadFile: fileUploader,
         }),
         ...extensions,
-      ],
+      ] as any,
       content: finalcontent,
-      onTransaction: ({ editor, transaction }) => {
-        // editor.state.selection.anchor;
-        // editor.view.posAtDOM()
-      },
+      // onTransaction: ({ editor, transaction }) => {
+      //   // editor.state.selection.anchor;
+      //   // editor.view.posAtDOM()
+      // },
       editorProps: {
         handlePaste: (view, event: ClipboardEvent, slice) => {
           console.log("pasted", event, slice, view);
@@ -245,7 +245,11 @@ export function Scaffold({
         {title}
       </Title>
       <TitleAndEditorSeparator />
-      <MainBodyContentEditor editor={editor} readonly={readonly} />
+      <MainBodyContentEditor
+        editor={editor}
+        readonly={readonly}
+        onUploadFile={fileUploader}
+      />
     </EditorWrap>
   );
 }

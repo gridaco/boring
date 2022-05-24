@@ -10,7 +10,13 @@ import {
 } from "@floating-ui/react-dom-interactions";
 import { AddBlockMenu } from "../menu";
 
-export function SideFloatingMenu({ editor }: { editor: Editor }) {
+export function SideFloatingMenu({
+  editor,
+  onUploadFile,
+}: {
+  editor: Editor;
+  onUploadFile;
+}) {
   const [addMenuShown, setAddMenuShown] = useState(false);
   const { x, y, reference, floating, context } = useFloating({
     middleware: [offset({ mainAxis: 4, crossAxis: 40 })],
@@ -52,7 +58,9 @@ export function SideFloatingMenu({ editor }: { editor: Editor }) {
             top: y,
           }}
         >
-          {addMenuShown && <AddBlockMenu editor={editor} />}
+          {addMenuShown && (
+            <AddBlockMenu editor={editor} onUploadFile={onUploadFile} />
+          )}
         </div>
         <Container>
           <AddButton

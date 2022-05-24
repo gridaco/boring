@@ -152,7 +152,7 @@ const getSuggestionItems = (
                     .chain()
                     .focus()
                     .deleteRange(range)
-                    .setIframe({ src: src, allowfullscreen: true })
+                    .setIframe({ src: src })
                     .run();
                 } else {
                   alert("Not a valid Youtube URL");
@@ -168,7 +168,7 @@ const getSuggestionItems = (
                     .chain()
                     .focus()
                     .deleteRange(range)
-                    .setIframe({ src: src, allowfullscreen: true })
+                    .setIframe({ src: src })
                     .run();
                 } else {
                   alert("Not a valid Vimeo URL");

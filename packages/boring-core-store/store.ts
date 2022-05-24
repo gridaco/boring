@@ -25,6 +25,10 @@ export class BoringDocumentsStore {
   }
 
   async prewarm(): Promise<IDBPDatabase> {
+    if (typeof indexedDB === "undefined") {
+      return;
+    }
+
     this._db = await openDB(_document_store_db_n, _document_store_db_v, {
       upgrade(db) {
         const store = db.createObjectStore(_boring_documents_store_name, {

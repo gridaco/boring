@@ -6,9 +6,11 @@ import getSuggestionItems from "./items";
 export function AddBlockMenu({
   editor,
   onUploadFile,
+  onHide,
 }: {
   editor: Editor;
   onUploadFile: (file: File) => Promise<string | false>;
+  onHide: () => void;
 }) {
   const ref = useRef<HTMLDivElement>();
   useEffect(() => {
@@ -45,6 +47,7 @@ export function AddBlockMenu({
               editor.view.state.selection.to,
             ],
           });
+          onHide();
         }}
         items={getSuggestionItems({ editor, onUploadFile })}
       />

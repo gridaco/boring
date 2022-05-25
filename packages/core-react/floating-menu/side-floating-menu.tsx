@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { FloatingMenu as TiptapFloatingMenu, Editor } from "@tiptap/react";
 import {
@@ -17,6 +17,7 @@ export function SideFloatingMenu({
   editor: Editor;
   onUploadFile;
 }) {
+  const rectref = useRef<HTMLDivElement>();
   const [addMenuShown, setAddMenuShown] = useState(false);
   const { x, y, reference, floating, context } = useFloating({
     middleware: [offset({ mainAxis: 4, crossAxis: 40 })],
@@ -39,6 +40,29 @@ export function SideFloatingMenu({
     setAddMenuShown(false);
   }, [editor.state.selection.anchor]);
 
+  // dismiss manager
+  useEffect(() => {
+    const hideonclickoutside = (event: MouseEvent) => {
+      if (rectref.current && !rectref.current.contains(event.target as Node)) {
+        hideAddMenu();
+      }
+    };
+
+    const hideonkeydown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        hideAddMenu();
+      }
+    };
+    if (addMenuShown) {
+      document.addEventListener("mousedown", hideonclickoutside);
+      document.addEventListener("keydown", hideonkeydown);
+    }
+    return () => {
+      document.removeEventListener("mousedown", hideonclickoutside);
+      document.removeEventListener("keydown", hideonkeydown);
+    };
+  }, [addMenuShown]);
+
   return (
     <>
       <TiptapFloatingMenu
@@ -47,20 +71,26 @@ export function SideFloatingMenu({
           offset: [0, -40],
         }}
       >
-        <div
-          ref={floating}
-          {...getFloatingProps()}
-          style={{
-            zIndex: 9,
-            position: "absolute",
-            display: addMenuShown ? "block" : "none",
-            left: x,
-            top: y,
-          }}
-        >
-          {addMenuShown && (
-            <AddBlockMenu editor={editor} onUploadFile={onUploadFile} />
-          )}
+        <div ref={rectref}>
+          <div
+            ref={floating}
+            {...getFloatingProps()}
+            style={{
+              zIndex: 9,
+              position: "absolute",
+              display: addMenuShown ? "block" : "none",
+              left: x,
+              top: y,
+            }}
+          >
+            {addMenuShown && (
+              <AddBlockMenu
+                editor={editor}
+                onUploadFile={onUploadFile}
+                onHide={hideAddMenu}
+              />
+            )}
+          </div>
         </div>
         <Container>
           <AddButton

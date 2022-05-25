@@ -1,5 +1,4 @@
-//
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled from "@emotion/styled";
 import { Title, TitleProps } from "../title";
 import { Node } from "@tiptap/core";
@@ -19,6 +18,10 @@ import {
   get_youtube_video_id,
   make_youtube_video_embed_url,
 } from "../embeding-utils";
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
+import Collaboration from "@tiptap/extension-collaboration";
+import * as Y from "yjs";
+import { WebrtcProvider } from "y-webrtc";
 
 export type InitialDocumentProp =
   | {
@@ -58,6 +61,9 @@ export interface ScaffoldProps {
   fileUploader?: (file: File) => Promise<string | false>;
 
   titleStyle?: TitleProps["style"];
+  collaboration?: {
+    enabled: boolean;
+  };
 }
 
 export function Scaffold({
@@ -72,6 +78,7 @@ export function Scaffold({
   onTriggerSave,
   fileUploader,
   titleStyle,
+  collaboration,
   ...props
 }: ScaffoldProps) {
   // region doc init
@@ -101,6 +108,22 @@ export function Scaffold({
   // store
   const service = new BoringDocumentStore(id);
 
+  // region collaboration
+  // A new Y document
+  const ydoc = useMemo(
+    () => (collaboration?.enabled ? new Y.Doc() : null),
+    [id, collaboration?.enabled]
+  );
+  // Registered with a WebRTC provider
+  const provider = useMemo(
+    () =>
+      collaboration?.enabled
+        ? new WebrtcProvider("boring.grida.co" + id, ydoc)
+        : null,
+    [id, ydoc, collaboration?.enabled]
+  );
+  // endregion collaboration
+
   const finalcontent = _makecontent(content);
   const editor = useEditor(
     {
@@ -109,6 +132,22 @@ export function Scaffold({
           onUploadFile: fileUploader,
         }),
         ...extensions,
+        // region collaboration extensions
+        ...(collaboration?.enabled
+          ? [
+              Collaboration.configure({
+                document: ydoc,
+              }),
+              CollaborationCursor.configure({
+                provider: provider,
+                user: {
+                  name: "Editor",
+                  color: randomCursorColor(),
+                },
+              }),
+            ]
+          : []),
+        // endregion collaboration extensions
       ] as any,
       content: finalcontent,
       // onTransaction: ({ editor, transaction }) => {
@@ -289,6 +328,66 @@ function _makecontent(raw: string | BoringContent): string {
     }
     return raw.raw;
   }
+}
+
+function randomCursorColor() {
+  const colors = [
+    "#f783ac",
+    "#f7b7c4",
+    "#f7d6a7",
+    "#f7c7a7",
+    "#f7b7a7",
+    "#f7a7a7",
+    "#f7a7b7",
+    "#f7a7c7",
+    "#f7a7d6",
+    "#f7a7e6",
+    "#f7a7f6",
+    "#f7a7ff",
+    "#f7d6ff",
+    "#f7c6ff",
+    "#f7b6ff",
+    "#f7a6ff",
+    "#f796ff",
+    "#f7a6f7",
+    "#f7a6e7",
+    "#f7a6d7",
+    "#f7a6c7",
+    "#f7a6b7",
+    "#f7a6a7",
+    "#f7a6a7",
+    "#f7a7a7",
+    "#f7b7a7",
+    "#f7c7a7",
+    "#f7d6a7",
+    "#f7e6a7",
+    "#f7f6a7",
+    "#ffa7a7",
+    "#ffa7b7",
+    "#ffa7c7",
+    "#ffa7d7",
+    "#ffa7e7",
+    "#ffa7f7",
+    "#ffa7ff",
+    "#ffd6ff",
+    "#ffc6ff",
+    "#ffb6ff",
+    "#ffa6ff",
+    "#ff96ff",
+    "#ffa6f7",
+    "#ffa6e7",
+    "#ffa6d7",
+    "#ffa6c7",
+    "#ffa6b7",
+    "#ffa6a7",
+    "#ffa6a7",
+    "#ffa7a7",
+    "#ffb7a7",
+    "#ffc7a7",
+    "#ffd6a7",
+    "#ffe6",
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
 }
 
 const TitleAndEditorSeparator = styled.div`

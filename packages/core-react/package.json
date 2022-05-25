@@ -8,6 +8,8 @@
         "@tiptap/extension-blockquote": "^2.0.0-beta.26",
         "@tiptap/extension-bubble-menu": "^2.0.0-beta.56",
         "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.68",
+        "@tiptap/extension-collaboration": "^2.0.0-beta.33",
+        "@tiptap/extension-collaboration-cursor": "^2.0.0-beta.34",
         "@tiptap/extension-image": "^2.0.0-beta.27",
         "@tiptap/extension-link": "^2.0.0-beta.37",
         "@tiptap/extension-mention": "^2.0.0-beta.96",
@@ -16,7 +18,9 @@
         "@tiptap/react": "^2.0.0-beta.109",
         "@tiptap/starter-kit": "^2.0.0-beta.184",
         "@tiptap/suggestion": "^2.0.0-beta.91",
-        "react-textarea-autosize": "^8.3.3"
+        "react-textarea-autosize": "^8.3.3",
+        "y-webrtc": "^10.2.3",
+        "yjs": "^13.5.38"
     },
     "devDependencies": {},
     "resolutions": {

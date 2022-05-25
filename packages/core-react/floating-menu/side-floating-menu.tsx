@@ -68,6 +68,7 @@ export function SideFloatingMenu({
       <TiptapFloatingMenu
         editor={editor}
         tippyOptions={{
+          zIndex: 3,
           offset: [0, -40],
         }}
       >
@@ -76,7 +77,7 @@ export function SideFloatingMenu({
             ref={floating}
             {...getFloatingProps()}
             style={{
-              zIndex: 9,
+              zIndex: 3,
               position: "absolute",
               display: addMenuShown ? "block" : "none",
               left: x,

@@ -83,9 +83,11 @@ export class BoringDocumentStore {
   }
 
   async updateContent(content: string) {
-    const beforeupdate = await this.get();
-    beforeupdate.content = new BoringContent(content);
-    /*no-await (no need to await)*/ this.put(beforeupdate);
-    return beforeupdate;
+    try {
+      const beforeupdate = await this.get();
+      beforeupdate.content = new BoringContent(content);
+      /*no-await (no need to await)*/ this.put(beforeupdate);
+      return beforeupdate;
+    } catch (e) {}
   }
 }

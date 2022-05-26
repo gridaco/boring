@@ -1812,7 +1812,7 @@ json5@^1.0.1:
   dependencies:
     minimist "^1.2.0"
 
-lib0@^0.2.42, lib0@^0.2.49:
+lib0@^0.2.35, lib0@^0.2.42, lib0@^0.2.49:
   version "0.2.51"
   resolved "https://registry.yarnpkg.com/lib0/-/lib0-0.2.51.tgz#23b1271a26f39120a4d0f86b9dfb44577f5ce98c"
   integrity sha512-05Erb3465CxJa38LQlMz4EbetNvRna1S3BzqEjC0/pmp5cQuQSfNNmeS0722Wev1dRlMUp2Cql0gQ55krSXf2Q==
@@ -3207,6 +3207,13 @@ xtend@^4.0.0, xtend@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
+
+y-indexeddb@^9.0.7:
+  version "9.0.7"
+  resolved "https://registry.yarnpkg.com/y-indexeddb/-/y-indexeddb-9.0.7.tgz#516f6a9dc2ca68a0cc280030141faecaae699ea9"
+  integrity sha512-58rDlwtRgXucgR9Kxc49AepAR6uGNGfcvPPAMrmMfSvRBQ/tPnx6NoHNyrRkhbALEAjV9tPEAIP0a/KkVqAIyA==
+  dependencies:
+    lib0 "^0.2.35"
 
 y-prosemirror@^1.0.14:
   version "1.1.1"

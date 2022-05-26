@@ -92,13 +92,14 @@ export function Scaffold({
   useEffect(() => {
     if (initializer.shouldload) {
       initializer.shouldload.then((d) => {
-        if (d) {
-          setTitle(d.title.raw);
-          setContent(d.content.raw);
-        } else {
-          setTitle("");
-          setContent("");
+        // load title
+        setTitle(d?.title?.raw ?? "");
+        // load body conditionally
+        if (collaboration?.enabled) {
+          // do not set initial data. if already loaed by collaboration module
+          if (editor && editor.getText()) return;
         }
+        setContent(d?.content?.raw ?? "");
       });
     }
   }, [initializer.id]);
@@ -111,7 +112,7 @@ export function Scaffold({
   // region collaboration
   // A new Y document
   const ydoc = useMemo(
-    () => (collaboration?.enabled ? new Y.Doc() : null),
+    () => (collaboration?.enabled ? new Y.Doc({}) : null),
     [id, collaboration?.enabled]
   );
   // Registered with a WebRTC provider
@@ -128,6 +129,11 @@ export function Scaffold({
   const editor = useEditor(
     {
       extensions: [
+        // StarterKit.configure({
+        //   gapcursor: false,
+        //   // history: collaboration?.enabled ? false : undefined,
+        //   history: false,
+        // }),
         ...default_extensions({
           onUploadFile: fileUploader,
         }),

@@ -71,6 +71,7 @@ export function SideFloatingMenu({
           zIndex: 3,
           offset: [0, -40],
         }}
+        // shouldShow={() => true}
       >
         <div ref={rectref}>
           <div

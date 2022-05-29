@@ -80,6 +80,14 @@ const getSuggestionItems = (
           .run();
       },
     },
+    <CommandItem>{
+      title: "Divider",
+      // icon: "divider",
+      subtitle: "Divide blocks with new line",
+      command: ({ editor, range }) => {
+        editor.chain().focus().deleteRange(range).setHorizontalRule().run();
+      },
+    },
     // <CommandItem>{
     //   title: "Text",
     //   icon: "text",

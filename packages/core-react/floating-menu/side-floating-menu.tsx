@@ -52,6 +52,8 @@ export function SideFloatingMenu({
       if (event.key === "Escape") {
         hideAddMenu();
       }
+
+      // TODO: pass event to add block menu
     };
     if (addMenuShown) {
       document.addEventListener("mousedown", hideonclickoutside);

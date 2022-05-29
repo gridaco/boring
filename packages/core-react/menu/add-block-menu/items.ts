@@ -82,7 +82,7 @@ const getSuggestionItems = (
     },
     <CommandItem>{
       title: "Divider",
-      // icon: "divider",
+      icon: "hr",
       subtitle: "Divide blocks with new line",
       command: ({ editor, range }) => {
         editor.chain().focus().deleteRange(range).setHorizontalRule().run();

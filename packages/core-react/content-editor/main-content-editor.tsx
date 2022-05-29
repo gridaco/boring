@@ -146,15 +146,25 @@ const EditorContentInstance = styled(EditorContent)`
     }
 
     hr {
-      cursor: pointer;
-      padding-top: 2px; /* for hr to be clickable */
-      margin-bottom: 2px; /* for hr to be clickable */
+      display: flex;
+      cursor: default;
+      height: 13px;
       outline: none;
+      margin: 0;
+      padding: 0;
       border: none;
-      border-bottom: solid 1px rgba(0, 0, 0, 0.12);
-
+      align-items: center;
+      :after {
+        display: inline-block;
+        content: "";
+        width: 100%;
+        height: 1px;
+        border-bottom: solid 1px rgba(0, 0, 0, 0.12);
+      }
       &.ProseMirror-selectednode {
-        border-bottom: solid 1px rgba(0, 0, 0, 0.3);
+        :after {
+          border-bottom: solid 1px rgba(0, 0, 0, 0.3);
+        }
       }
     }
   }

@@ -86,6 +86,8 @@ const getSuggestionItems = (
       subtitle: "Divide blocks with new line",
       command: ({ editor, range }) => {
         editor.chain().focus().deleteRange(range).setHorizontalRule().run();
+        // create new empty block below (only for divider)
+        editor.chain().focus().setNode("paragraph").run();
       },
     },
     // <CommandItem>{
@@ -115,7 +117,7 @@ const getSuggestionItems = (
           }
 
           onUploadFile(file)
-            .then((url) => {
+            ?.then((url) => {
               if (url) {
                 editor
                   .chain()

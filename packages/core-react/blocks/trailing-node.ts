@@ -33,7 +33,7 @@ const TrailingNode = Extension.create<TrailingNodeOptions>({
     const plugin = new PluginKey(this.name);
     const disabledNodes = Object.entries(this.editor.schema.nodes)
       .map(([, value]) => value)
-      .filter((node) => this.options.notAfter.includes(node.name));
+      .filter((node) => this.options.notAfter.includes((node as any).name));
 
     return [
       new Plugin({

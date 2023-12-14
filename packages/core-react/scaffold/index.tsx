@@ -184,6 +184,7 @@ export function Scaffold({
             // the addImage function checks the files are an image upload, and returns the url
             for (let i = 0; i < event.dataTransfer.files.length; i++) {
               const file = event.dataTransfer.files.item(i);
+              if (!file) return false
               fileUploader?.(file).then((url) => {
                 if (url) {
                   if (file.type.includes("image")) {
@@ -233,14 +234,14 @@ export function Scaffold({
   };
 
   // this inserts the image with src url into the editor at the position of the drop
-  const addImage = (view: EditorView<any>, url: string, pos: number) => {
+  const addImage = (view: EditorView, url: string, pos: number) => {
     const { schema } = view.state;
     const node = schema.nodes.image.create({ src: url });
     const transaction = view.state.tr.insert(pos, node);
     return view.dispatch(transaction);
   };
 
-  const addVideo = (view: EditorView<any>, url: string, pos: number) => {
+  const addVideo = (view: EditorView, url: string, pos: number) => {
     const { schema } = view.state;
     const node = schema.nodes.video.create({ src: url });
     const transaction = view.state.tr.insert(pos, node);

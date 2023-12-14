@@ -12,7 +12,7 @@ import { SideFloatingMenu } from "../floating-menu";
 import { BoringContent } from "@boring.so/document-model";
 
 interface MainBodyContentEditorProps {
-  editor: Editor;
+  editor: Editor | null;
 
   /**
    * initial height of interactive area. defaults to 200px.

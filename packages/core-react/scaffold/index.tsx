@@ -137,7 +137,7 @@ export function Scaffold({
         ...default_extensions({
           onUploadFile: fileUploader,
         }),
-        ...extensions,
+        ...(extensions ?? []),
         // region collaboration extensions
         ...(collaboration?.enabled
           ? [

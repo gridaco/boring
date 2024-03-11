@@ -1,4 +1,7 @@
 {
     "name": "@boring.so/document-model",
-    "version": "0.0.0"
+    "version": "0.0.0",
+    "dependencies": {
+        "nanoid": "^3.1.23"
+    }
 }

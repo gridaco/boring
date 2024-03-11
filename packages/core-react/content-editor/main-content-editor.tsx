@@ -9,7 +9,6 @@ import { Editor, useEditor, EditorContent } from "@tiptap/react";
 import { DEFAULT_THEME_FONT_FAMILY } from "../theme";
 import { InlineToolbar } from "../inline-toolbar";
 import { SideFloatingMenu } from "../floating-menu";
-import { BoringContent } from "@boring.so/document-model";
 
 interface MainBodyContentEditorProps {
   editor: Editor | null;

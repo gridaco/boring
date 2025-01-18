@@ -61,6 +61,7 @@ function LinkItem({ editor }: { editor: Editor }) {
           position: "absolute",
           display: isOpen ? "block" : "none",
           left: 0,
+          // @ts-ignore
           top: y,
         }}
       >
@@ -144,7 +145,14 @@ function Items({
             </Icon>
           </Item>
           <Item
-            onClick={() => editor.chain().focus().toggleBold().run()}
+            onClick={() =>
+              editor
+                .chain()
+                .focus()
+                // @ts-ignore
+                .toggleBold()
+                .run()
+            }
             className={isBold ? "is-active" : ""}
           >
             <Icon id="ic_text_bold" width="18" height="18" viewBox="0 0 18 18">
@@ -155,7 +163,14 @@ function Items({
             </Icon>
           </Item>
           <Item
-            onClick={() => editor.chain().focus().toggleItalic().run()}
+            onClick={() =>
+              editor
+                .chain()
+                .focus()
+                // @ts-ignore
+                .toggleItalic()
+                .run()
+            }
             className={isItalic ? "is-active" : ""}
           >
             <Icon
@@ -191,7 +206,14 @@ function Items({
             </Icon>
           </Item>
           <Item
-            onClick={() => editor.chain().focus().toggleStrike().run()}
+            onClick={() =>
+              editor
+                .chain()
+                .focus()
+                // @ts-ignore
+                .toggleStrike()
+                .run()
+            }
             className={isStrike ? "is-active" : ""}
           >
             <Icon
@@ -209,7 +231,12 @@ function Items({
           <Divider />
           <Item
             onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
+              editor
+                .chain()
+                .focus()
+                // @ts-ignore
+                .toggleHeading({ level: 1 })
+                .run()
             }
             className={isH1 ? "is-active" : ""}
           >
@@ -232,7 +259,12 @@ function Items({
           </Item>
           <Item
             onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
+              editor
+                .chain()
+                .focus()
+                // @ts-ignore
+                .toggleHeading({ level: 2 })
+                .run()
             }
             className={isH2 ? "is-active" : ""}
           >
@@ -266,6 +298,7 @@ function Items({
 }
 
 // https://www.tiptap.dev/examples/menus
+// @ts-ignore
 const MenuWrapper = styled(BubbleMenu)`
   display: flex;
   justify-content: flex-start;

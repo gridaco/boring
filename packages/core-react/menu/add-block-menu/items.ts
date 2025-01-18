@@ -85,7 +85,13 @@ const getSuggestionItems = (
       icon: "hr",
       subtitle: "Divide blocks with new line",
       command: ({ editor, range }) => {
-        editor.chain().focus().deleteRange(range).setHorizontalRule().run();
+        editor
+          .chain()
+          .focus()
+          .deleteRange(range)
+          // @ts-ignore
+          .setHorizontalRule()
+          .run();
         // create new empty block below (only for divider)
         editor.chain().focus().setNode("paragraph").run();
       },
@@ -110,7 +116,9 @@ const getSuggestionItems = (
         input.type = "file";
         input.accept = "image/*";
         input.style.display = "none";
+        // @ts-ignore
         input.onchange = async () => {
+          // @ts-ignore
           const file = input.files[0];
           if (!file || !file.type.includes("image/")) {
             return;
